@@ -1,13 +1,13 @@
-﻿@page "/login"
+﻿@page "/sign-up"
 
-<h1>Farmer's Mercato</h1>
+<h1>Sign Up</h1>
 
 <MudTextField @bind-Value="TextValue" Label="Username" Variant="Variant.Filled"></MudTextField>
 <MudTextField @bind-Value="TextValue" Label="Password" Variant="Variant.Filled"></MudTextField>
-<MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/cart">LOG IN</MudButton>
+<MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/login">SIGN UP</MudButton>
 
-<h3>Don't have an account?</h3>
-<h3><a href="/sign-up">Sign Up</a></h3>
+<h3>Already have an account?</h3>
+<h3><a href="/login">Log In</a></h3>
 
 
 @code {
