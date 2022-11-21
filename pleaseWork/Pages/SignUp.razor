@@ -1,15 +1,21 @@
 ﻿@page "/sign-up"
+@inject IDialogService DialogService
 
 <h1>Sign Up</h1>
 
 <MudTextField @bind-Value="TextValue" Label="Username" Variant="Variant.Filled"></MudTextField>
 <MudTextField @bind-Value="TextValue" Label="Password" Variant="Variant.Filled"></MudTextField>
-<MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/login">SIGN UP</MudButton>
+<MudButton @onclick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">SIGN UP</MudButton>
 
 <h3>Already have an account?</h3>
 <h3><a href="/login">Log In</a></h3>
 
-
 @code {
     public string TextValue { get; set; }
+
+    private void OpenDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<Dialog>("Account created successfully", options);
+    }
 }
