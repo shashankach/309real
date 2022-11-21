@@ -1,0 +1,126 @@
+﻿@page "/search"
+@*<MudPaper Class="pa-4" Style="@($"color:{Theme.Palette.Dark}; background:{Theme.Palette.Warning};")">
+        Search
+    </MudPaper>*@
+
+<MudTextField @bind-Value="@search_text" HelperText="@results_text" Label="Search" Variant="Variant.Filled"></MudTextField>
+<div id="search-button">
+    <MudButton Variant="Variant.Outlined" DisableElevation="true" OnClick="beginSearch">Search</MudButton>
+</div>
+
+<MudGrid Justify="Justify.Center">
+    <MudItem>
+        <MudCard Height="180px" Width="160px">
+            <MudPaper Height="110px" Width="160px" />
+            <MudCardContent>
+                <MudText>Bananas</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Height="180px" Width="160px">
+            <MudPaper Height="110px" Width="160px" />
+            <MudCardContent>
+                <MudText>Apples</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Height="180px" Width="160px">
+            <MudPaper Height="110px" Width="160px" />
+            <MudCardContent>
+                <MudText>Clams</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Height="180px" Width="160px">
+            <MudPaper Height="110px" Width="160px" />
+            <MudCardContent>
+                <MudText>Radishes</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Height="180px" Width="160px">
+            <MudPaper Height="110px" Width="160px" />
+            <MudCardContent>
+                <MudText>Carrots</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Height="180px" Width="160px">
+            <MudPaper Height="110px" Width="160px" />
+            <MudCardContent>
+                <MudText>Wine</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+</MudGrid>
+
+
+
+@code {
+    public string TextValue { get; set; }
+    private MudTheme Theme = new MudTheme();
+
+    string search_text = "";
+    string results_text = "";
+
+    //String[] items = { "Apples", "Bananas", "Carrots", "Apples", "Cherries" };
+
+    Item[] items = {
+            new Item("Apples", 2.99, "Bello Farms", "Some Apples", 5),
+            new Item("Apples", 2.99, "Bello Farms", "Some Apples", 5),
+            new Item("Bananas", 0.99, "Bello Farms", "Some Apples", 5),
+            new Item("Bananas", 0.99, "Bello Farms", "Some Apples", 5),
+    };
+
+    public class Item
+    {
+        public Item(string name, double price, string seller,
+            string description, int rating)
+        {
+            this.name = name;
+            this.price = price;
+            this.seller = seller;
+            this.description = description;
+            this.rating = rating;
+        }
+
+        public string name { get; set; }
+        public double price { get; set; }
+        public string seller { get; set; }
+        public string description { get; set; }
+        public int rating { get; set; }
+    }
+
+    private void beginSearch()
+    {
+        int results_count = 0;
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i].name == search_text)
+            {
+                results_count++;
+            }
+        }
+
+        if (results_count == 1)
+        {
+            results_text = results_count + " result for " + search_text;
+        }
+        else
+        {
+            results_text = results_count + " results for " + search_text;
+        }
+
+    }
+}
