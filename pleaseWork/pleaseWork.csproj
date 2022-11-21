@@ -52,8 +52,17 @@
     <ItemGroup>
       <None Remove="MudBlazor" />
       <None Remove="Resources\Images\degenerato.png" />
+      <None Remove="Microsoft.CodeCoverage" />
+      <None Remove="Resources\Images\image 7 %283%29.png" />
+      <None Remove="Resources\Images\carrot.png" />
+      <None Remove="Resources\Images\image 2 %282%29.png" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="MudBlazor" Version="6.1.2" />
+    </ItemGroup>
+    <ItemGroup>
+      <BundleResource Include="Resources\Images\radish.png" />
+      <BundleResource Include="Resources\Images\*" />
+      <BundleResource Include="Resources\Images\carrot.png" />
     </ItemGroup>
 </Project>

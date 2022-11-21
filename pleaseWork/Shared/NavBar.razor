@@ -1,14 +1,21 @@
 ﻿
 <MudAppBar Bottom="true" Fixed="true" Color="Color.Primary">
-    <MudIconButton Icon="@Icons.Material.Filled.Deblur" Color="Color.Inherit" Edge="Edge.Start" Href="/counter" />
+    @*<div id="background">*@
+        <MudIconButton Icon="@Icons.Custom.Uncategorized.Radioactive" Color="Color.Inherit" Edge="Edge.Start" Href="/login" />
+    @*</div>*@
     <MudSpacer />
-    <MudIconButton Icon="@Icons.Custom.Uncategorized.Radioactive" Color="Color.Inherit" Edge="Edge.Start" Href="/login" />
-    <MudSpacer />
+    @*<div id="background">*@
+        <MudIconButton Icon="@Icons.Material.Filled.FavoriteBorder" Color="Color.Inherit" Edge="Edge.End" Href="/search" />
+    @*</div>*@
+        <MudSpacer />
+@*<div id="background">*@
+    <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" Href="/map" />
+@*</div>*@
+        <MudSpacer />
+@*<div id="background">*@
     <MudIconButton Icon="@Icons.Filled.ShoppingCart" Color="Color.Inherit" Edge="Edge.Start" Href="/cart" />
-    <MudSpacer />
-    <MudIconButton Icon="@Icons.Material.Filled.FavoriteBorder" Color="Color.Inherit" Edge="Edge.End" Href="/" />
-    <MudSpacer />
-    <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" Href="/fetchdata" />
+@*</div>*@
+
 </MudAppBar>
 
 @code{
