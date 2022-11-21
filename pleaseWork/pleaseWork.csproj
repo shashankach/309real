@@ -52,8 +52,10 @@
     <ItemGroup>
       <None Remove="MudBlazor" />
       <None Remove="Resources\Images\degenerato.png" />
+      <None Remove="MudBlazor.ThemeManager" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="MudBlazor" Version="6.1.2" />
+      <PackageReference Include="MudBlazor.ThemeManager" Version="1.0.7" />
     </ItemGroup>
 </Project>
