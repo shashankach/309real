@@ -1,18 +1,15 @@
 ﻿@page "/cart"
 
-<h1>Inventory</h1>
+<h1>Cart</h1>
 
 
+@*<MudButton Href="/billing"
+           Variant="Variant.Filled"
+           Color="Color.Primary"
+           align-items: center;>
+    Checkout
+</MudButton>*@
 
-
-
-<MudButton Variant="Variant.Filled" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Error">Banana</MudButton>
-<MudButton Variant="Variant.Filled" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Error">Pasionfruit</MudButton>
-<MudButton Variant="Variant.Filled" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Error">Zuchinni</MudButton>
-<MudButton Variant="Variant.Filled" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Error">Melon</MudButton>
-<MudButton Variant="Variant.Filled" StartIcon="@Icons.Filled.AddShoppingCart" Color="Color.Error">Apple</MudButton>
-<MudSpacer />
-
-@code {
-    public string TextValue { get; set; }
-}
+    @code {
+        public string TextValue { get; set; }
+    }
