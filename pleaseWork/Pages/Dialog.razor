@@ -1,11 +1,14 @@
-﻿<MudDialog>
+﻿@page "/dialog"
+
+<MudDialog>
     <DialogContent>
         You will now be redirected to the Log In page. Please log in to verify your account.
     </DialogContent>
     <DialogActions>
-        <MudButton Color="Color.Primary" OnClick="Submit" Href="/login">Ok</MudButton>
+        <MudButton Color="Color.Secondary" OnClick="Submit" Href="/login">Ok</MudButton>
     </DialogActions>
 </MudDialog>
+
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }

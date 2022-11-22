@@ -7,16 +7,15 @@
 <div class="page">
 
     <main>
-        <div class="top-row px-4">
+        @*<div class="top-row px-4">
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
+        </div>*@
 
         <article class="content px-4">
             @Body
         </article>
     </main>
 </div>
-
 <MudThemeProvider Theme="MyCustomTheme" />
 <NavBar />
 
@@ -25,18 +24,20 @@
     {
         Palette = new Palette
         {
-            AppbarBackground = "#3C8844",
+            AppbarBackground = "#FFFFFF",
+            Secondary = "#3C8844",
             AppbarText = "#FFFFFF",
-            Primary = "#3C8844",
+            Primary = "#FFFFFF",
             TextPrimary = "#FFFFFF",
-            Background = "#3C8844",
+            Background = "#FFFFFF",
             TextSecondary = "#FFFFFF",
             DrawerBackground = "#000000",
             DrawerText = "#FFFFFF",
-            Surface = "#ABABAB",
+            Surface = "#3C8844",
             ActionDefault = "#000000",
-            ActionDisabled = "#000000",
+            ActionDisabled = "#3C8844",
             TextDisabled = "#000000",
+            TertiaryDarken = "#3C8844",
         }
     };
 }

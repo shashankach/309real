@@ -1,17 +1,19 @@
 ﻿@page "/search"
-@*<MudPaper Class="pa-4" Style="@($"color:{Theme.Palette.Dark}; background:{Theme.Palette.Warning};")">
-        Search
-    </MudPaper>*@
+@inject NavigationManager NavManager
+@using pleaseWork.Data
+@inject Data.DataCart DataCart
 
-<MudTextField @bind-Value="@search_text" HelperText="@results_text" Label="Search" Variant="Variant.Filled"></MudTextField>
+
+<MudTextField @bind-Value="@search_text" @onkeydown="@Enter" Label="Search" Variant="Variant.Filled"></MudTextField>
 <div id="search-button">
-    <MudButton Variant="Variant.Outlined" DisableElevation="true" OnClick="beginSearch">Search</MudButton>
+    @*<MudButton Variant="Variant.Filled" DisableElevation="true" OnClick="beginSearch">Search</MudButton>*@
 </div>
+@*HelperText="@results_text"*@
 
-<MudGrid Justify="Justify.Center">
+<MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
     <MudItem>
-        <MudCard Height="180px" Width="160px">
-            <MudPaper Height="110px" Width="160px" />
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudPaper Height="110px" Width="172px" />
             <MudCardContent>
                 <MudText>Bananas</MudText>
                 <MudText Typo="Typo.body2">$3.99</MudText>
@@ -19,8 +21,8 @@
         </MudCard>
     </MudItem>
     <MudItem>
-        <MudCard Height="180px" Width="160px">
-            <MudPaper Height="110px" Width="160px" />
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudPaper Height="110px" Width="172px" />
             <MudCardContent>
                 <MudText>Apples</MudText>
                 <MudText Typo="Typo.body2">$3.99</MudText>
@@ -28,8 +30,8 @@
         </MudCard>
     </MudItem>
     <MudItem>
-        <MudCard Height="180px" Width="160px">
-            <MudPaper Height="110px" Width="160px" />
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudPaper Height="110px" Width="172px" />
             <MudCardContent>
                 <MudText>Clams</MudText>
                 <MudText Typo="Typo.body2">$3.99</MudText>
@@ -37,17 +39,17 @@
         </MudCard>
     </MudItem>
     <MudItem>
-        <MudCard Height="180px" Width="160px">
-            <MudPaper Height="110px" Width="160px" />
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudPaper Height="110px" Width="172px" />
             <MudCardContent>
                 <MudText>Radishes</MudText>
                 <MudText Typo="Typo.body2">$3.99</MudText>
             </MudCardContent>
         </MudCard>
     </MudItem>
-    <MudItem>
-        <MudCard Height="180px" Width="160px">
-            <MudPaper Height="110px" Width="160px" />
+    <MudItem @onclick="toProduct">
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudCardMedia Height="110" Image="https://i.imgur.com/54e6tXY.png" />
             <MudCardContent>
                 <MudText>Carrots</MudText>
                 <MudText Typo="Typo.body2">$3.99</MudText>
@@ -55,8 +57,8 @@
         </MudCard>
     </MudItem>
     <MudItem>
-        <MudCard Height="180px" Width="160px">
-            <MudPaper Height="110px" Width="160px" />
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudPaper Height="110px" Width="172px" />
             <MudCardContent>
                 <MudText>Wine</MudText>
                 <MudText Typo="Typo.body2">$3.99</MudText>
@@ -69,6 +71,7 @@
 
 @code {
     public string TextValue { get; set; }
+    private DataCart.Item[] items;
     private MudTheme Theme = new MudTheme();
 
     string search_text = "";
@@ -76,51 +79,46 @@
 
     //String[] items = { "Apples", "Bananas", "Carrots", "Apples", "Cherries" };
 
-    Item[] items = {
-            new Item("Apples", 2.99, "Bello Farms", "Some Apples", 5),
-            new Item("Apples", 2.99, "Bello Farms", "Some Apples", 5),
-            new Item("Bananas", 0.99, "Bello Farms", "Some Apples", 5),
-            new Item("Bananas", 0.99, "Bello Farms", "Some Apples", 5),
-    };
 
-    public class Item
+
+    private void Enter(KeyboardEventArgs e)
     {
-        public Item(string name, double price, string seller,
-            string description, int rating)
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
         {
-            this.name = name;
-            this.price = price;
-            this.seller = seller;
-            this.description = description;
-            this.rating = rating;
-        }
-
-        public string name { get; set; }
-        public double price { get; set; }
-        public string seller { get; set; }
-        public string description { get; set; }
-        public int rating { get; set; }
-    }
-
-    private void beginSearch()
-    {
-        int results_count = 0;
-        for (int i = 0; i < items.Length; i++)
-        {
-            if (items[i].name == search_text)
+            int results_count = 0;
+            for (int i = 0; i < items.Length; i++)
             {
-                results_count++;
+                if (items[i].name == search_text)
+                {
+                    results_count++;
+                }
+            }
+
+            if (results_count == 1)
+            {
+                results_text = results_count + " result for " + search_text;
+            }
+            else
+            {
+                results_text = results_count + " results for " + search_text;
             }
         }
 
-        if (results_count == 1)
-        {
-            results_text = results_count + " result for " + search_text;
-        }
-        else
-        {
-            results_text = results_count + " results for " + search_text;
-        }
-
     }
+
+    private void toProduct()
+    {
+        NavManager.NavigateTo("/product");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await DataCart.getCart();
+    }
+
+    public DataCart.Item[] getCart()
+    {
+        return DataCart.getCart2();
+    }
+
 }
