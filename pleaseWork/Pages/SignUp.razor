@@ -8,7 +8,7 @@
 <MudButton @onclick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">SIGN UP</MudButton>
 
 <h3>Already have an account?</h3>
-<h3><a href="/login">Log In</a></h3>
+<h3><a href="/">Log In</a></h3>
 
 @code {
     public string TextValue { get; set; }
@@ -19,3 +19,9 @@
         DialogService.Show<Dialog>("Account created successfully", options);
     }
 }
+
+<style>
+    #nav-bar {
+        visibility: hidden;
+    }
+</style>
