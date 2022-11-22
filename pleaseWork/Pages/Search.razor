@@ -3,7 +3,6 @@
 @using pleaseWork.Data
 @inject Data.DataCart DataCart
 
-
 <MudTextField @bind-Value="@search_text" @onkeydown="@Enter" Label="Search" Variant="Variant.Filled"></MudTextField>
 <div id="search-button">
     @*<MudButton Variant="Variant.Filled" DisableElevation="true" OnClick="beginSearch">Search</MudButton>*@
@@ -66,8 +65,6 @@
         </MudCard>
     </MudItem>
 </MudGrid>
-
-
 
 @code {
     public string TextValue { get; set; }
