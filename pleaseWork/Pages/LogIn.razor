@@ -1,19 +1,27 @@
 ﻿@page "/"
 
+<style>
+    body {
+        background-color: #3C8844;
+    }
+</style>
 <h1>Farmer's Mercato</h1>
+<h1>Log in</h1>
+<h3>Sign in to continue</h3>
 
 <MudTextField @bind-Value="TextValue" Label="Username" Variant="Variant.Filled"></MudTextField>
 <MudTextField @bind-Value="TextValue" Label="Password" Variant="Variant.Filled"></MudTextField>
-<center>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/cart">LOG IN</MudButton>
+<MudButton Class="mt-2" Variant="Variant.Filled" Color="Color.Inherit" Href="/search">LOG IN</MudButton>
 
-
-    <h3>Don't have an account?</h3>
-    <h3><a href="/sign-up">Sign Up</a></h3>
-
-</center>
-
+<h4 Class="mt-5">Don't have an account?</h4>
+<h6><a Class="mt-5" href="/sign-up">Sign Up</a></h6>
 
 @code {
     public string TextValue { get; set; }
 }
+
+<style>
+    #nav-bar {
+        visibility: hidden;
+    }
+</style>
