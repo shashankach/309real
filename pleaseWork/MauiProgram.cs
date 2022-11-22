@@ -22,8 +22,10 @@ public static class MauiProgram
 #endif
 		
 		builder.Services.AddSingleton<WeatherForecastService>();
+        builder.Services.AddSingleton<DataCart>();
 
-		return builder.Build();
+        return builder.Build();
 	}
+
 }
 
