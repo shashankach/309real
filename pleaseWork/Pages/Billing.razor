@@ -1,10 +1,21 @@
 ﻿@page "/billing"
 
-<h1>Log in</h1>
-<h3>Sign in to continue</h3>
+    <center>
+        <MudPaper Elevation="10" Height="47px" Width="100%">
+            <MudText Class="pt-2" Typo="Typo.h5">Payment</MudText>
+        </MudPaper>
+    </center>
+
+    <MudText Typo="Typo.body2">Order Total</MudText>
+    <MudText Typo="Typo.body2">Delivery Fee</MudText>
+    <MudText Typo="Typo.subtitle2">Total Payment</MudText>
 
 
 
-@code {
-    public string TextValue { get; set; }
-}
+    <MudText Typo="Typo.body1">choose Payment Method</MudText>
+
+
+
+    @code {
+        public string TextValue { get; set; }
+    }
