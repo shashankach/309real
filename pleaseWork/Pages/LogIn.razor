@@ -1,22 +1,22 @@
-﻿@page "/"
-    <center>
-        <h1>Farmer's Mercato</h1>
+@page "/"
 
+<h1>Farmer's Mercato</h1>
+<h1>Log in</h1>
 
-        <MudTextField @bind-Value="TextValue" Label="Username" Variant="Variant.Filled"></MudTextField>
-        <MudTextField @bind-Value="TextValue" Label="Password" Variant="Variant.Filled"></MudTextField>
-        <MudButton Class="mt-2" Variant="Variant.Filled" Color="Color.Inherit" Href="/search">LOG IN</MudButton>
+<MudTextField @bind-Value="UsernameTextValue" Label="Username" Variant="Variant.Filled"></MudTextField>
+<MudTextField @bind-Value="PasswordTextValue" Label="Password" Variant="Variant.Filled" InputType=InputType.Password></MudTextField>
+<MudButton Class="mt-2" Variant="Variant.Filled" Color="Color.Inherit" Href="/search">LOG IN</MudButton>
 
-        <h4 Class="mt-5">Don't have an account?</h4>
-        <h6><a Class="mt-5" href="/sign-up">Sign Up</a></h6>
-    </center>
+<h4 Class="mt-5">Don't have an account?</h4>
+<h6><a Class="mt-5" href="/sign-up">Sign Up</a></h6>
 
-    @code {
-        public string TextValue { get; set; }
+@code {
+    public string UsernameTextValue { get; set; }
+    public string PasswordTextValue { get; set; }
+}
+
+<style>
+    #nav-bar {
+        visibility: hidden;
     }
-
-    <style>
-        #nav-bar {
-            visibility: hidden;
-        }
-    </style>
+</style>
