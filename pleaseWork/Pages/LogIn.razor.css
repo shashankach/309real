@@ -1,6 +1,14 @@
-﻿#background {
-    background-color: #3C8844;
-    align-content: center;
+<<<<<<< HEAD
+﻿h1 {
+    text-align: center;
+}
+
+center {
+    text-align: center;
+}
+/*﻿#background {*/
+/*    background-color: #3C8844;*/
+/*    align-content: center;
     border-radius: 0px 0px 0px 0px;
     text-align: center;
     position: fixed;
@@ -8,4 +16,4 @@
     left: 0;
     right: 0;
     bottom: 0;
-}
+}*/
