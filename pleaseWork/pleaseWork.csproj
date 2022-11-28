@@ -61,6 +61,7 @@
     <ItemGroup>
       <PackageReference Include="MudBlazor" Version="6.1.2" />
       <PackageReference Include="MudBlazor.ThemeManager" Version="1.0.7" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     </ItemGroup>
     <ItemGroup>
       <BundleResource Include="Resources\Images\radish.png" />

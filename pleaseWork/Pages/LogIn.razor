@@ -1,19 +1,52 @@
+@using Models
+@using Newtonsoft.Json;
+@inject NavigationManager MyNavigationManager
+@inject IDialogService DialogService
+
 @page "/"
 
-<center>
-<h1>Farmer's Mercato</h1>
+<div id="body">
+    <h1>Farmer's Mercato</h1>
 
     <MudTextField @bind-Value="UsernameTextValue" Label="Username" Variant="Variant.Filled"></MudTextField>
     <MudTextField @bind-Value="PasswordTextValue" Label="Password" Variant="Variant.Filled" InputType=InputType.Password></MudTextField>
-    <MudButton Class="mt-2" Variant="Variant.Filled" Color="Color.Inherit" Href="/search">LOG IN</MudButton>
+    <MudButton Class="mt-2" @onclick="SignIn" Variant="Variant.Filled" Color="Color.Primary">LOG IN</MudButton>
 
     <h4 Class="mt-5">Don't have an account?</h4>
     <h6><a Class="mt-5" href="/sign-up">Sign Up</a></h6>
-</center>
+</div>
 
 @code {
     public string UsernameTextValue { get; set; }
     public string PasswordTextValue { get; set; }
+
+    private void OpenDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<LogInDialog>("Error logging in", options);
+    }
+
+    private async Task SignIn()
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/log-in") };
+
+        HttpResponseMessage response = null;
+        response = await client.GetAsync(client.BaseAddress);
+
+        var data = await response.Content.ReadAsStringAsync();
+        dynamic accounts = JsonConvert.DeserializeObject(data);
+
+        foreach (var account in accounts)
+        {
+            if (account.username == UsernameTextValue && account.password == PasswordTextValue)
+            {
+                MyNavigationManager.NavigateTo("/search");
+                return;
+            }
+        }
+
+        OpenDialog();
+    }
 }
 
 <style>
@@ -21,11 +54,7 @@
         visibility: hidden;
     }
 
-    h1 {
-        text-align: center;
-    }
-
-    center {
+    #body {
         text-align: center;
     }
 </style>
