@@ -1,27 +1,55 @@
-﻿@page "/sign-up"
+﻿@using Models
+
+@page "/sign-up"
 @inject IDialogService DialogService
 
-<h1>Sign Up</h1>
+<div id="body">
+    <h1>Sign Up</h1>
 
-<MudTextField @bind-Value="TextValue" Label="Username" Variant="Variant.Filled"></MudTextField>
-<MudTextField @bind-Value="TextValue" Label="Password" Variant="Variant.Filled"></MudTextField>
-<MudButton @onclick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">SIGN UP</MudButton>
+    <MudTextField @bind-Value="UsernameTextValue" Label="Username" Variant="Variant.Filled"></MudTextField>
+    <MudTextField @bind-Value="PasswordTextValue" Label="Password" Variant="Variant.Filled" InputType=InputType.Password></MudTextField>
+    <MudButton @onclick="AddAccount" Variant="Variant.Filled" Color="Color.Primary">SIGN UP</MudButton>
 
-<h3>Already have an account?</h3>
-<h3><a href="/">Log In</a></h3>
+    <h4>Already have an account?</h4>
+    <h6><a href="/">Log In</a></h6>
+</div>
 
 @code {
-    public string TextValue { get; set; }
+    public string UsernameTextValue { get; set; }
+    public string PasswordTextValue { get; set; }
 
     private void OpenDialog()
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
-        DialogService.Show<Dialog>("Account created successfully", options);
+        DialogService.Show<SignUpDialog>("Account created successfully", options);
+    }
+
+    private async Task AddAccount()
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/sign-up") };
+
+        HttpResponseMessage response = null;
+
+        var acct = new User()
+        {
+            username = UsernameTextValue,
+            password = PasswordTextValue
+        };
+
+        var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(acct), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
+
+        response = await client.PostAsync(client.BaseAddress, payloadString);
+
+        OpenDialog();
     }
 }
 
 <style>
     #nav-bar {
         visibility: hidden;
+    }
+
+    #body {
+        text-align: center;
     }
 </style>

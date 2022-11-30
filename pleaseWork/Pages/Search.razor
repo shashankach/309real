@@ -1,7 +1,8 @@
 ﻿@page "/search"
 @inject NavigationManager NavManager
-@inject Data.DataCart DataCart
 @using pleaseWork.Data
+@inject Data.DataCart DataCart
+
 
 <MudTextField @bind-Value="@search_text" @onkeydown="@Enter" Label="Search" Variant="Variant.Filled"></MudTextField>
 <div id="search-button">
@@ -12,11 +13,7 @@
 <MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
     <MudItem>
         <MudCard Elevation="10" Height="180px" Width="172px">
-<<<<<<< HEAD
             <MudCardMedia Height="110" Image="https://i.imgur.com/1HHtMnW.png" />
-=======
-            <MudCardMedia Height="110" Image="https://i.imgur.com/aeqjjxW.png" />
->>>>>>> bfdf524 (same)
             <MudCardContent>
                 <MudText>Bananas</MudText>
                 <MudText Typo="Typo.body2">$3.99</MudText>
@@ -69,45 +66,148 @@
         </MudCard>
     </MudItem>
 </MudGrid>
+=======
+<MudTabs Elevation="2" Rounded="true" Centered="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+    <MudTabPanel Text="Produce">
+        <MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
+            <MudItem>
+                <MudCard Elevation="10" Height="180px" Width="172px">
+                    <MudPaper Height="110px" Width="172px" />
+                    <MudCardContent>
+                        <MudText>Bananas</MudText>
+                        <MudText Typo="Typo.body2">$3.99</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+            <MudItem>
+                <MudCard Elevation="10" Height="180px" Width="172px">
+                    <MudPaper Height="110px" Width="172px" />
+                    <MudCardContent>
+                        <MudText>Apples</MudText>
+                        <MudText Typo="Typo.body2">$3.99</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+            <MudItem>
+                <MudCard Elevation="10" Height="180px" Width="172px">
+                    <MudPaper Height="110px" Width="172px" />
+                    <MudCardContent>
+                        <MudText>Clams</MudText>
+                        <MudText Typo="Typo.body2">$3.99</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+            <MudItem>
+                <MudCard Elevation="10" Height="180px" Width="172px">
+                    <MudPaper Height="110px" Width="172px" />
+                    <MudCardContent>
+                        <MudText>Radishes</MudText>
+                        <MudText Typo="Typo.body2">$3.99</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+            <MudItem @onclick="toProduct">
+                <MudCard Elevation="10" Height="180px" Width="172px">
+                    <MudCardMedia Height="110" Image="https://i.imgur.com/54e6tXY.png" />
+                    <MudCardContent>
+                        <MudText>Carrots</MudText>
+                        <MudText Typo="Typo.body2">$3.99</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+            <MudItem>
+                <MudCard Elevation="10" Height="180px" Width="172px">
+                    <MudPaper Height="110px" Width="172px" />
+                    <MudCardContent>
+                        <MudText>Wine</MudText>
+                        <MudText Typo="Typo.body2">$3.99</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </MudTabPanel>
+    <MudTabPanel Text="Farmers">
+        <MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
+            <MudItem>
+                <MudCard Elevation="10" Height="180px" Width="172px">
+                    <MudPaper Height="110px" Width="172px" />
+                    <MudCardContent>
+                        <MudText>George Farms</MudText>
+                        <MudText Typo="Typo.body2">Local Farmer</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+            <MudItem>
+                <MudCard Elevation="10" Height="180px" Width="172px">
+                    <MudPaper Height="110px" Width="172px" />
+                    <MudCardContent>
+                        <MudText>Dirt to Health Farm</MudText>
+                        <MudText Typo="Typo.body2">Urban Farm</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+            <MudItem>
+                <MudCard Elevation="10" Height="180px" Width="172px">
+                    <MudPaper Height="110px" Width="172px" />
+                    <MudCardContent>
+                        <MudText>John Smith Farms</MudText>
+                        <MudText Typo="Typo.body2">Local Farm</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+            <MudItem>
+                <MudCard Elevation="10" Height="180px" Width="172px">
+                    <MudPaper Height="110px" Width="172px" />
+                    <MudCardContent>
+                        <MudText>Fresh and Fruity</MudText>
+                        <MudText Typo="Typo.body2">Urban Farm</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </MudTabPanel>
+</MudTabs>
 
 @code {
-        public string TextValue { get; set; }
-        private DataCart.Item[] items;
-        private MudTheme Theme = new MudTheme();
+    public string TextValue { get; set; }
+    private DataCart.Item[] items;
+    private MudTheme Theme = new MudTheme();
 
-        string search_text = "";
-        string results_text = "";
+    string search_text = "";
+    string results_text = "";
 
-        //String[] items = { "Apples", "Bananas", "Carrots", "Apples", "Cherries" };
+    //String[] items = { "Apples", "Bananas", "Carrots", "Apples", "Cherries" };
 
-        private void Enter(KeyboardEventArgs e)
+
+
+    private void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
         {
-            if (e.Code == "Enter" || e.Code == "NumpadEnter")
+            int results_count = 0;
+            for (int i = 0; i < items.Length; i++)
             {
-                int results_count = 0;
-                for (int i = 0; i < items.Length; i++)
+                if (items[i].name == search_text)
                 {
-                    if (items[i].name == search_text)
-                    {
+                    results_count++;
+                }
+            }
 
-                    }
-                }
-
-                if (results_count == 1)
-                {
-                    results_text = results_count + " result for " + search_text;
-                }
-                else
-                {
-                    results_text = results_count + " results for " + search_text;
-                }
+            if (results_count == 1)
+            {
+                results_text = results_count + " result for " + search_text;
+            }
+            else
+            {
+                results_text = results_count + " results for " + search_text;
             }
         }
 
-        private void toProduct()
-        {
-            //Console.WriteLine(s);
-            NavManager.NavigateTo("/product");
+    }
+
+    private void toProduct()
+    {
+        NavManager.NavigateTo("/product");
     }
 
     protected override async Task OnInitializedAsync()
@@ -119,4 +219,5 @@
     {
         return DataCart.getCart2();
     }
+
 }
