@@ -3,7 +3,6 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-
 <div class="page">
 
     <main>
@@ -17,28 +16,18 @@
     </main>
 </div>
 
-<MudThemeProvider />
+<MudThemeProvider Theme="MyCustomTheme"/>
+
 <NavBar />
 
 @code{
-    MudTheme MyCustomTheme = new MudTheme()
-    {
-        Palette = new Palette
+        MudTheme MyCustomTheme = new MudTheme()
         {
-            AppbarBackground = "#FFFFFF",
-            Secondary = "#3C8844",
-            AppbarText = "#FFFFFF",
-            Primary = "#FFFFFF",
-            TextPrimary = "#FFFFFF",
-            Background = "#FFFFFF",
-            TextSecondary = "#FFFFFF",
-            DrawerBackground = "#000000",
-            DrawerText = "#FFFFFF",
-            Surface = "#3C8844",
-            ActionDefault = "#000000",
-            ActionDisabled = "#3C8844",
-            TextDisabled = "#000000",
-            TertiaryDarken = "#3C8844",
-        }
-    };
-}
+            Palette = new Palette()
+            {
+                Primary = Colors.Green.Default,
+                Secondary = Colors.Blue.Accent1,
+                AppbarBackground = Colors.Red.Default,
+            },
+        };
+    }
