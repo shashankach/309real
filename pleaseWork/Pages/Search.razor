@@ -10,6 +10,63 @@
 </div>
 @*HelperText="@results_text"*@
 
+<MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
+    <MudItem>
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudCardMedia Height="110" Image="https://i.imgur.com/1HHtMnW.png" />
+            <MudCardContent>
+                <MudText>Bananas</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudCardMedia Height="110" Image="https://i.imgur.com/TZ1efgX.png" />
+            <MudCardContent>
+                <MudText>Apples</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudCardMedia Height="110" Image="https://i.imgur.com/N7a3wgL.png" />
+            <MudCardContent>
+                <MudText>Clams</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudCardMedia Height="110" Image="https://i.imgur.com/54e6tXY.png" />
+            <MudCardContent>
+                <MudText>Radishes</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem @onclick="toProduct">
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudCardMedia Height="110" Image="https://i.imgur.com/54e6tXY.png" />
+            <MudCardContent>
+                <MudText>Carrots</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem @onclick="toProduct">
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudCardMedia Height="110" Image="https://i.imgur.com/EoyKEj0.png" />
+            <MudCardContent>
+                <MudText id="item_name">Carrots</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+</MudGrid>
+=======
 <MudTabs Elevation="2" Rounded="true" Centered="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
     <MudTabPanel Text="Produce">
         <MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
@@ -110,8 +167,6 @@
         </MudGrid>
     </MudTabPanel>
 </MudTabs>
-
-
 
 @code {
     public string TextValue { get; set; }
