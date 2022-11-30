@@ -1,27 +1,59 @@
-﻿@page "/"
+@using Models
+@using Newtonsoft.Json;
+@inject NavigationManager MyNavigationManager
+@inject IDialogService DialogService
 
-<style>
-    body {
-        background-color: #3C8844;
-    }
-</style>
-<h1>Farmer's Mercato</h1>
-<h1>Log in</h1>
-<h3>Sign in to continue</h3>
+@page "/"
 
-<MudTextField @bind-Value="TextValue" Label="Username" Variant="Variant.Filled"></MudTextField>
-<MudTextField @bind-Value="TextValue" Label="Password" Variant="Variant.Filled"></MudTextField>
-<MudButton Class="mt-2" Variant="Variant.Filled" Color="Color.Inherit" Href="/search">LOG IN</MudButton>
-
-<h4 Class="mt-5">Don't have an account?</h4>
-<h6><a Class="mt-5" href="/sign-up">Sign Up</a></h6>
+<div id="body">
+  <MudStack AlignItems="AlignItems.Center" Spacing="16">
+      <MudText Typo="Typo.h2">Farmer's Mercato</MudText>
+      <MudTextField @bind-Value="UsernameTextValue" Label="Username" FullWidth="true" Variant="Variant.Filled"></MudTextField>
+      <MudTextField @bind-Value="PasswordTextValue" Label="Password" FullWidth="true" Variant="Variant.Filled" InputType=InputType.Password></MudTextField>
+      <MudButton Class="mt-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" FullWidth="true" Href="/search">LOG IN</MudButton>
+      @*<MudText Typo="Typo.h6">Don't have an account?</MudText>*@
+      <MudButton Variant="Variant.Outlined" Size="Size.Large" Color="Color.Primary" FullWidth="true" Href="/sign-up">Sign Up</MudButton>
+  </MudStack>
+</div>
 
 @code {
-    public string TextValue { get; set; }
+    public string UsernameTextValue { get; set; }
+    public string PasswordTextValue { get; set; }
+
+    private void OpenDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<LogInDialog>("Error logging in", options);
+    }
+
+    private async Task SignIn()
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/log-in") };
+
+        HttpResponseMessage response = null;
+        response = await client.GetAsync(client.BaseAddress);
+
+        var data = await response.Content.ReadAsStringAsync();
+        dynamic accounts = JsonConvert.DeserializeObject(data);
+
+        foreach (var account in accounts)
+        {
+            if (account.username == UsernameTextValue && account.password == PasswordTextValue)
+            {
+                MyNavigationManager.NavigateTo("/search");
+                return;
+            }
+        }
+
+        OpenDialog();
+    }
 }
 
 <style>
     #nav-bar {
         visibility: hidden;
+    }
+    #body {
+        text-align: center;
     }
 </style>
