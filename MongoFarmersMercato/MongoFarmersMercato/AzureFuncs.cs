@@ -28,14 +28,14 @@ namespace MongoFarmersMercato
         [BsonElement("farmer")]
         public bool farmer { get; set; }
 
-        [BsonElement("cart")]
+/*        [BsonElement("cart")]
         public List<Product> cart { get; set; }
 
         [BsonElement("inventory")]
-        public List<Product> inventory { get; set; }
+        public List<Product> inventory { get; set; }*/
     }
 
-    public class Product
+   /* public class Product
     {
         [BsonElement("name")]
         public string name { get; set; }
@@ -48,7 +48,7 @@ namespace MongoFarmersMercato
 
         [BsonElement("image")]
         public string image { get; set; }
-    }
+    }*/
 
     public static class AzureFuncs
     {

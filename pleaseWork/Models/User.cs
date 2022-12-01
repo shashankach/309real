@@ -14,5 +14,8 @@ namespace pleaseWork.Models
 
         [JsonProperty(PropertyName = "password")]
         public string password { get; set; }
+
+        [JsonProperty(PropertyName = "farmer")]
+        public bool farmer { get; set; }
     }
 }
