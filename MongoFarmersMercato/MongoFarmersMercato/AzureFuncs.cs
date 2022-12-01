@@ -35,6 +35,22 @@ namespace MongoFarmersMercato
         public List<Product> inventory { get; set; }*/
     }
 
+    public class Product
+    {
+        [BsonElement("name")]
+        public string name { get; set; }
+
+        [BsonElement("price")]
+        public Double price { get; set; }
+
+        [BsonElement("seller")]
+        public string seller {  get; set; }
+
+        [BsonElement("image")]
+        public string image { get; set; }
+>>>>>>> 1a586ebf8ed74827d409f6010ca5284bd1290269
+    }
+
    /* public class Product
     {
         [BsonElement("name")]
