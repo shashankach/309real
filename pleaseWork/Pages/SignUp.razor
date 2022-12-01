@@ -5,7 +5,8 @@
 
 <div id="body">
     <h1>Sign Up</h1>
-
+    <MudTextField @bind-Value="NameTextValue" Label="Name" Variant="Variant.Filled"></MudTextField>
+    <MudTextField @bind-Value="EmailTextValue" Label="Email" Variant="Variant.Filled"></MudTextField>
     <MudTextField @bind-Value="UsernameTextValue" Label="Username" Variant="Variant.Filled"></MudTextField>
     <MudTextField @bind-Value="PasswordTextValue" Label="Password" Variant="Variant.Filled" InputType=InputType.Password></MudTextField>
     <MudForm>
@@ -23,6 +24,8 @@
     public string UsernameTextValue { get; set; }
     public string PasswordTextValue { get; set; }
     public string SelectedOption { get; set; }
+    public string NameTextValue { get; set; }
+    public string EmailTextValue { get; set; }
 
     private void OpenDialog()
     {
@@ -40,7 +43,12 @@
         {
             username = UsernameTextValue,
             password = PasswordTextValue,
-            farmer = SelectedOption == "farmer" ? true : false
+            farmer = SelectedOption == "farmer" ? true : false,
+            name = NameTextValue,
+            email = EmailTextValue,
+            image = null,
+            cart = null,
+            inventory = null
         };
 
         var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(acct), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);

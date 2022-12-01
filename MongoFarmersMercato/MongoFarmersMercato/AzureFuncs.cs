@@ -28,11 +28,20 @@ namespace MongoFarmersMercato
         [BsonElement("farmer")]
         public bool farmer { get; set; }
 
-/*        [BsonElement("cart")]
+        [BsonElement("cart")]
         public List<Product> cart { get; set; }
 
         [BsonElement("inventory")]
-        public List<Product> inventory { get; set; }*/
+        public List<Product> inventory { get; set; }
+
+        [BsonElement("name")]
+        public string name { get; set; }
+
+        [BsonElement("email")]
+        public string email { get; set; }
+
+        [BsonElement("image")]
+        public string image { get; set; }
     }
 
     public class Product
@@ -44,27 +53,11 @@ namespace MongoFarmersMercato
         public Double price { get; set; }
 
         [BsonElement("seller")]
-        public string seller {  get; set; }
+        public string seller { get; set; }
 
         [BsonElement("image")]
         public string image { get; set; }
->>>>>>> 1a586ebf8ed74827d409f6010ca5284bd1290269
     }
-
-   /* public class Product
-    {
-        [BsonElement("name")]
-        public string name { get; set; }
-
-        [BsonElement("price")]
-        public Double price { get; set; }
-
-        [BsonElement("seller")]
-        public string seller {  get; set; }
-
-        [BsonElement("image")]
-        public string image { get; set; }
-    }*/
 
     public static class AzureFuncs
     {
@@ -106,6 +99,28 @@ namespace MongoFarmersMercato
                 var collection = database.GetCollection<User>("users");
 
                 var accounts = await collection.Find(_ => true).ToListAsync();
+
+                return accounts;
+            }
+            catch (Exception)
+            {
+                return new List<User>();
+
+            }
+        }
+
+        [FunctionName("search")]
+        public static async Task<List<User>> Search(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "search")] HttpRequest req)
+        {
+            try
+            {
+                string connectionString = "mongodb+srv://farmersmercatoadmin:3y1C4McLKhvGA3Ae@farmersmercato.fmitmu2.mongodb.net/test";
+                var client = new MongoClient(connectionString);
+                var database = client.GetDatabase("MongoFarmersMercato");
+                var collection = database.GetCollection<User>("users");
+
+                var accounts = await collection.Find(acct => acct.farmer == true).ToListAsync();
 
                 return accounts;
             }

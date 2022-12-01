@@ -17,5 +17,20 @@ namespace pleaseWork.Models
 
         [JsonProperty(PropertyName = "farmer")]
         public bool farmer { get; set; }
+
+        [JsonProperty(PropertyName = "name")]
+        public string name { get; set; }
+
+        [JsonProperty(PropertyName = "email")]
+        public string email { get; set; }
+
+        [JsonProperty(PropertyName = "image")]
+        public string image { get; set; }
+
+        [JsonProperty(PropertyName = "cart")]
+        public List<Product> cart { get; set; }
+
+        [JsonProperty(PropertyName = "inventory")]
+        public List<Product> inventory { get; set; }
     }
 }
