@@ -5,18 +5,27 @@
 
 <div id="body">
     <h1>Sign Up</h1>
-
+    <MudTextField @bind-Value="NameTextValue" Label="Name" Variant="Variant.Filled"></MudTextField>
+    <MudTextField @bind-Value="EmailTextValue" Label="Email" Variant="Variant.Filled"></MudTextField>
     <MudTextField @bind-Value="UsernameTextValue" Label="Username" Variant="Variant.Filled"></MudTextField>
     <MudTextField @bind-Value="PasswordTextValue" Label="Password" Variant="Variant.Filled" InputType=InputType.Password></MudTextField>
-    <MudButton @onclick="AddAccount" Variant="Variant.Filled" Color="Color.Primary">SIGN UP</MudButton>
-
-    <h4>Already have an account?</h4>
-    <h6><a href="/">Log In</a></h6>
+    <MudForm>
+        <MudRadioGroup @bind-SelectedOption="@SelectedOption">
+            <MudRadio Option="@("farmer")" Color="Color.Primary">Farmer</MudRadio>
+            <MudRadio Option="@("customer")" Color="Color.Primary">Customer</MudRadio>
+        </MudRadioGroup>
+    </MudForm>
+    <MudButton Class="mt-2" @onclick="AddAccount" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" FullWidth="true">SIGN UP</MudButton>
+    @*<h4>Already have an account?</h4>*@
+    <MudButton Variant="Variant.Outlined" Size="Size.Large" Color="Color.Primary" FullWidth="true" Href="/">Log In</MudButton>
 </div>
 
 @code {
     public string UsernameTextValue { get; set; }
     public string PasswordTextValue { get; set; }
+    public string SelectedOption { get; set; }
+    public string NameTextValue { get; set; }
+    public string EmailTextValue { get; set; }
 
     private void OpenDialog()
     {
@@ -33,7 +42,13 @@
         var acct = new User()
         {
             username = UsernameTextValue,
-            password = PasswordTextValue
+            password = PasswordTextValue,
+            farmer = SelectedOption == "farmer" ? true : false,
+            name = NameTextValue,
+            email = EmailTextValue,
+            image = null,
+            cart = null,
+            inventory = null
         };
 
         var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(acct), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
