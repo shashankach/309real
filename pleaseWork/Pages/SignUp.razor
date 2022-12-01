@@ -4,14 +4,19 @@
 @inject IDialogService DialogService
 
 <div id="body">
-    <h1>Sign Up</h1>
+    <MudStack AlignItems="AlignItems.Center" Spacing="16">
+        <MudText Typo="Typo.h2">Sign Up</MudText>
 
-    <MudTextField @bind-Value="UsernameTextValue" Label="Username" Variant="Variant.Filled"></MudTextField>
-    <MudTextField @bind-Value="PasswordTextValue" Label="Password" Variant="Variant.Filled" InputType=InputType.Password></MudTextField>
-    <MudButton @onclick="AddAccount" Variant="Variant.Filled" Color="Color.Primary">SIGN UP</MudButton>
+        <MudTextField @bind-Value="UsernameTextValue" Label="Username" FullWidth="true" Variant="Variant.Filled"></MudTextField>
+        <MudTextField @bind-Value="PasswordTextValue" Label="Password" FullWidth="true" Variant="Variant.Filled" InputType=InputType.Password></MudTextField>
+        <MudButton @onclick="AddAccount" Class="mt-2 ma-10" FullWidth="true" Variant="Variant.Filled" Color="Color.Primary">SIGN UP</MudButton>
+    </MudStack>
 
-    <h4>Already have an account?</h4>
-    <h6><a href="/">Log In</a></h6>
+    <MudText Typo="Typo.h5" Class="d-inline ">Already have an account?</MudText>
+    <MudText Typo="Typo.h5" Class="d-inline"><a Href="/"> Log In</a></MudText>
+    @*<h6><a href="/">Log In</a></h6>*@
+    @*<MudButton Variant="Variant.Outlined" Size="Size.Large" Color="Color.Primary" FullWidth="true" Href="/">Log In</MudButton>*@
+
 </div>
 
 @code {
