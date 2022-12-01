@@ -56,29 +56,31 @@ namespace MongoFarmersMercato
 
             return new OkObjectResult("user added");
         }
-
-        [FunctionName("log-in")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
-            ILogger log)
+        public static class LoginFunc
         {
-            var client = new MongoClient(System.Environment.GetEnvironmentVariable("MongoDBAtlasConnectionString"));
-            var database = client.GetDatabase("MongoFarmersMercato");
-            var collection = database.GetCollection<User>("users");
-
-            string username = req.Query["username"];
-            string password = req.Query["password"];
-            /*string userType = req.Query["userType"];*/
-
-            var acct = await collection.Find({username: username, password: password});
-
-            if (acct)
+            [FunctionName("log-in")]
+            public static async Task<IActionResult> Run(
+                [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+                ILogger log)
             {
-                return new OkObjectResult("user exists");
-            }
-            else
-            {
-                return new OkObjectResult("user does not exist");
+                var client = new MongoClient(System.Environment.GetEnvironmentVariable("MongoDBAtlasConnectionString"));
+                var database = client.GetDatabase("MongoFarmersMercato");
+                var collection = database.GetCollection<User>("users");
+
+                string username = req.Query["username"];
+                string password = req.Query["password"];
+                /*string userType = req.Query["userType"];*/
+
+                var acct = await collection.Find({username: username, password: password});
+
+                if (acct)
+                {
+                    return new OkObjectResult("user exists");
+                }
+                else
+                {
+                    return new OkObjectResult("user does not exist");
+                }
             }
         }
     }

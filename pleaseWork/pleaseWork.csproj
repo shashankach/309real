@@ -57,15 +57,82 @@
       <None Remove="Resources\Images\carrot.png" />
       <None Remove="Resources\Images\image 2 %282%29.png" />
       <None Remove="MudBlazor.ThemeManager" />
+      <None Remove="MongoDB.Bson" />
+      <None Remove="Microsoft.Azure.Functions.Analyzers" />
+      <None Remove="Azure.Core" />
+      <None Remove="Microsoft.Azure.WebJobs" />
+      <None Remove="Microsoft.Azure.WebJobs.Core" />
+      <None Remove="Microsoft.Azure.WebJobs.Extensions.Http" />
+      <None Remove="MongoDB.Driver" />
+      <None Remove="MongoDB.Driver.Core" />
+      <None Remove="MongoDB.Libmongocrypt" />
+      <None Remove="MongoDB.Driver.GridFS" />
+      <None Remove="System.Net.WebHeaderCollection" />
+      <None Remove="System.Collections" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="MudBlazor" Version="6.1.2" />
       <PackageReference Include="MudBlazor.ThemeManager" Version="1.0.7" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+      <PackageReference Include="MongoDB.Bson" Version="2.18.0" />
+      <PackageReference Include="Azure.Core" Version="1.26.0" />
+      <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.33" />
+      <PackageReference Include="Microsoft.Azure.WebJobs.Core" Version="3.0.33" />
+      <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.2.0" />
+      <PackageReference Include="MongoDB.Driver" Version="2.18.0" />
+      <PackageReference Include="MongoDB.Driver.Core" Version="2.18.0" />
+      <PackageReference Include="MongoDB.Libmongocrypt" Version="1.6.0" />
+      <PackageReference Include="MongoDB.Driver.GridFS" Version="2.18.0" />
+      <PackageReference Include="System.Net.WebHeaderCollection" Version="4.3.0" />
+      <PackageReference Include="System.Collections" Version="4.3.0" />
     </ItemGroup>
     <ItemGroup>
       <BundleResource Include="Resources\Images\radish.png" />
       <BundleResource Include="Resources\Images\*" />
       <BundleResource Include="Resources\Images\carrot.png" />
+      <BundleResource Include="Resources\Raw\host.json" Condition="'$(ExcludeConfigFilesFromBuildOutput)'!='true'">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </BundleResource>
+      <BundleResource Include="Resources\Raw\launchSettings.json" Condition="'$(ExcludeConfigFilesFromBuildOutput)'!='true'">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </BundleResource>
+      <BundleResource Include="Resources\Raw\serviceDependencies.json" Condition="'$(ExcludeConfigFilesFromBuildOutput)'!='true'">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </BundleResource>
+      <BundleResource Include="Resources\Raw\serviceDependencies.local.json" Condition="'$(ExcludeConfigFilesFromBuildOutput)'!='true'">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </BundleResource>
+      <BundleResource Include="Resources\Raw\host.json">
+        <LogicalName>host.json</LogicalName>
+      </BundleResource>
+      <BundleResource Include="Resources\Raw\serviceDependencies.local.json">
+        <LogicalName>serviceDependencies.local.json</LogicalName>
+      </BundleResource>
+      <BundleResource Include="Resources\Raw\launchSettings.json">
+        <LogicalName>launchSettings.json</LogicalName>
+      </BundleResource>
+      <BundleResource Include="Resources\Raw\serviceDependencies.json">
+        <LogicalName>serviceDependencies.json</LogicalName>
+      </BundleResource>
+    </ItemGroup>
+    <ItemGroup>
+      <Content Remove="Resources\Raw\host.json" />
+      <Content Remove="Resources\Raw\launchSettings.json" />
+      <Content Remove="Resources\Raw\serviceDependencies.json" />
+      <Content Remove="Resources\Raw\serviceDependencies.local.json" />
+    </ItemGroup>
+    <ItemGroup>
+      <MauiAsset Remove="Resources\Raw\host.json" />
+      <MauiAsset Remove="Resources\Raw\serviceDependencies.local.json" />
+      <MauiAsset Remove="Resources\Raw\launchSettings.json" />
+      <MauiAsset Remove="Resources\Raw\serviceDependencies.json" />
     </ItemGroup>
 </Project>
