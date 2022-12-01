@@ -24,6 +24,30 @@ namespace MongoFarmersMercato
 
         [BsonElement("password")]
         public string password { get; set; }
+
+        [BsonElement("farmer")]
+        public bool farmer { get; set; }
+
+        [BsonElement("cart")]
+        public List<Product> cart { get; set; }
+
+        [BsonElement("inventory")]
+        public List<Product> inventory { get; set; }
+    }
+
+    public class Product
+    {
+        [BsonElement("name")]
+        public string name { get; set; }
+
+        [BsonElement("price")]
+        public Double price { get; set; }
+
+        [BsonElement("seller")]
+        public string seller {  get; set; }
+
+        [BsonElement("image")]
+        public string image { get; set; }
     }
 
     public static class AzureFuncs
