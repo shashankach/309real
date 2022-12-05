@@ -4,21 +4,6 @@
 @inject IDialogService DialogService
 
 <div id="body">
-<<<<<<< HEAD
-    <MudStack AlignItems="AlignItems.Center" Spacing="16">
-        <MudText Typo="Typo.h2">Sign Up</MudText>
-
-        <MudTextField @bind-Value="UsernameTextValue" Label="Username" FullWidth="true" Variant="Variant.Filled"></MudTextField>
-        <MudTextField @bind-Value="PasswordTextValue" Label="Password" FullWidth="true" Variant="Variant.Filled" InputType=InputType.Password></MudTextField>
-        <MudButton @onclick="AddAccount" Class="mt-2 ma-10" FullWidth="true" Variant="Variant.Filled" Color="Color.Primary">SIGN UP</MudButton>
-    </MudStack>
-
-    <MudText Typo="Typo.h5" Class="d-inline ">Already have an account?</MudText>
-    <MudText Typo="Typo.h5" Class="d-inline"><a Href="/"> Log In</a></MudText>
-    @*<h6><a href="/">Log In</a></h6>*@
-    @*<MudButton Variant="Variant.Outlined" Size="Size.Large" Color="Color.Primary" FullWidth="true" Href="/">Log In</MudButton>*@
-
-=======
     <h1>Sign Up</h1>
     <MudTextField @bind-Value="NameTextValue" Label="Name" Variant="Variant.Filled"></MudTextField>
     <MudTextField @bind-Value="EmailTextValue" Label="Email" Variant="Variant.Filled"></MudTextField>
@@ -33,7 +18,6 @@
     <MudButton Class="mt-2" @onclick="AddAccount" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" FullWidth="true">SIGN UP</MudButton>
     @*<h4>Already have an account?</h4>*@
     <MudButton Variant="Variant.Outlined" Size="Size.Large" Color="Color.Primary" FullWidth="true" Href="/">Log In</MudButton>
->>>>>>> 3bff5cb9aaf8775409ee46c10765a2cc5ce4925b
 </div>
 
 @code {
