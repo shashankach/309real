@@ -47,8 +47,7 @@
             name = NameTextValue,
             email = EmailTextValue,
             image = null,
-            cart = null,
-            inventory = null
+            cart = null
         };
 
         var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(acct), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
@@ -60,7 +59,11 @@
 }
 
 <style>
-    #nav-bar {
+    #user-nav-bar {
+        visibility: hidden;
+    }
+
+    #farmer-nav-bar {
         visibility: hidden;
     }
 

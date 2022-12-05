@@ -31,9 +31,6 @@ namespace MongoFarmersMercato
         [BsonElement("cart")]
         public List<Product> cart { get; set; }
 
-        [BsonElement("inventory")]
-        public List<Product> inventory { get; set; }
-
         [BsonElement("name")]
         public string name { get; set; }
 
@@ -109,9 +106,9 @@ namespace MongoFarmersMercato
             }
         }
 
-        [FunctionName("search")]
-        public static async Task<List<User>> Search(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "search")] HttpRequest req)
+        [FunctionName("search-farmers")]
+        public static async Task<List<User>> SearchFarmers(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "search-farmers")] HttpRequest req)
         {
             try
             {
@@ -129,6 +126,81 @@ namespace MongoFarmersMercato
                 return new List<User>();
 
             }
+        }
+
+        [FunctionName("search-products")]
+        public static async Task<List<Product>> SearchProducts(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "search-products")] HttpRequest req)
+        {
+            try
+            {
+                string connectionString = "mongodb+srv://farmersmercatoadmin:3y1C4McLKhvGA3Ae@farmersmercato.fmitmu2.mongodb.net/test";
+                var client = new MongoClient(connectionString);
+                var database = client.GetDatabase("MongoFarmersMercato");
+                var collection = database.GetCollection<Product>("products");
+
+                var products = await collection.Find(_ => true).ToListAsync();
+
+                return products;
+            }
+            catch (Exception)
+            {
+                return new List<Product>();
+
+            }
+        }
+
+        [FunctionName("update-inventory")]
+        public static async Task<IActionResult> UpdateInventory(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "update-inventory")] HttpRequest req)
+        {
+            try
+            {
+                string connectionString = "mongodb+srv://farmersmercatoadmin:3y1C4McLKhvGA3Ae@farmersmercato.fmitmu2.mongodb.net/test";
+                var client = new MongoClient(connectionString);
+                var database = client.GetDatabase("MongoFarmersMercato");
+                var collection = database.GetCollection<Product>("products");
+
+                var userInput = await new StreamReader(req.Body).ReadToEndAsync();
+
+                Product newProduct = JsonConvert.DeserializeObject<Product>(userInput);
+
+                await collection.InsertOneAsync(newProduct);
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult("Error adding product - " + e.Message);
+
+            }
+
+            return (ActionResult)new OkObjectResult("Successfully added product");
+        }
+
+        [FunctionName("remove-product")]
+        public static async Task<IActionResult> RemoveProduct(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "remove-product")] HttpRequest req)
+        {
+            try
+            {
+                string connectionString = "mongodb+srv://farmersmercatoadmin:3y1C4McLKhvGA3Ae@farmersmercato.fmitmu2.mongodb.net/test";
+                var client = new MongoClient(connectionString);
+                var database = client.GetDatabase("MongoFarmersMercato");
+                var collection = database.GetCollection<Product>("products");
+
+                var userInput = await new StreamReader(req.Body).ReadToEndAsync();
+
+                Product product = JsonConvert.DeserializeObject<Product>(userInput);
+
+                await collection.DeleteOneAsync(Builders<Product>.Filter.Eq(p => p.name, product.name) &
+                    Builders<Product>.Filter.Eq(p => p.seller, product.seller));
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult("Error removing product - " + e.Message);
+
+            }
+
+            return (ActionResult)new OkObjectResult("Successfully removed product");
         }
     }
 }

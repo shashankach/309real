@@ -1,11 +1,11 @@
-﻿@page "/added"
+﻿@page "/add-product-dialog"
 
 <MudDialog>
     <DialogContent>
-        Added To Cart!
+        You will now be redirected to your inventory.
     </DialogContent>
     <DialogActions>
-        <MudButton Color="Color.Primary" OnClick="Submit" Href="/search">Ok</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit" Href="/inventory">Ok</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -15,9 +15,3 @@
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
 }
-
-<style>
-    #farmer-nav-bar {
-        visibility: hidden;
-    }
-</style>
