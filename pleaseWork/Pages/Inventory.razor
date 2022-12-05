@@ -1,0 +1,122 @@
+﻿@using Models
+@page "/inventory"
+@inject IDialogService DialogService
+
+<div id="body">
+    <center>
+        <MudPaper Elevation="10" Height="47px" Width="100%">
+            <MudText Class="pt-2" Typo="Typo.h5">Your Products</MudText>
+        </MudPaper>
+    </center>
+</div>
+<MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
+    <MudItem>
+        <MudButton Variant="Variant.Outlined" Size="Size.Large" Color="Color.Primary" FullWidth="true" Href="/add-product">Add Product</MudButton>
+    </MudItem>
+    <MudItem>
+        <MudButton Variant="Variant.Outlined" Size="Size.Large" Color="Color.Primary" FullWidth="true" Href="/remove-product">Remove Product</MudButton>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
+    <MudItem>
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudPaper Height="110px" Width="172px" />
+            <MudCardContent>
+                <MudText>Bananas</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudPaper Height="110px" Width="172px" />
+            <MudCardContent>
+                <MudText>Apples</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudPaper Height="110px" Width="172px" />
+            <MudCardContent>
+                <MudText>Clams</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudPaper Height="110px" Width="172px" />
+            <MudCardContent>
+                <MudText>Radishes</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudCardMedia Height="110" Image="https://i.imgur.com/54e6tXY.png" />
+            <MudCardContent>
+                <MudText>Carrots</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudPaper Height="110px" Width="172px" />
+            <MudCardContent>
+                <MudText>Wine</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+</MudGrid>
+
+
+@code {
+
+    public string nameText { get; set; }
+    public Double priceText { get; set; }
+    public string sellerText { get; set; }
+    public string imageText { get; set; }
+
+    private void OpenDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<SignUpDialog>("Product successfully added", options);
+    }
+
+    private async Task Add_Product()
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/add-product") };
+
+        HttpResponseMessage response = null;
+
+        var acct = new Models.Product()
+        {
+            name = nameText,
+            price = priceText,
+            seller = sellerText,
+            image = imageText,
+        };
+
+        var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(acct), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
+
+        response = await client.PostAsync(client.BaseAddress, payloadString);
+
+        OpenDialog();
+    }
+}
+
+<style>
+    #nav-bar {
+        visibility: hidden;
+    }
+
+    #body {
+        text-align: center;
+    }
+</style>
