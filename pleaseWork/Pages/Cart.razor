@@ -1,14 +1,11 @@
 ﻿@page "/cart"
 
-<MudToolBar Color="Color.Primary">
-    <MudIconButton Icon="@Icons.Material.Outlined.MoreVert" Color="Color.Inherit" />
-</MudToolBar>
-
-<div id="background">
-    <MudPaper Elevation="10" Height="47px" Width="100%">
-        <MudText Class="pt-2" Typo="Typo.h5">Your Order</MudText>
-    </MudPaper>
-</div>
+<MudAppBar Color="Color.Secondary" Fixed="false">
+    <MudIconButton Icon="@Icons.Filled.ArrowBack" Color="Color.Primary" Edge="Edge.Start" />
+    <MudSpacer />
+    <MudText Typo="Typo.h6">Your Orders</MudText>
+    <MudSpacer />
+</MudAppBar>
 
 <MudStack>
     <MudItem>
