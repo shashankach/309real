@@ -20,23 +20,14 @@
             }
             else
             {
-<<<<<<< HEAD
                 foreach (var product in Products)
-=======
-                for(var i = 0; i < Products.Count; i++)
->>>>>>> f76e8fe643614c8c9cabcdbe197896a89874ed95
                 {
                     <MudItem>
                         <MudCard Elevation="10" Height="180px" Width="172px">
                             <MudPaper Height="110px" Width="172px" />
                             <MudCardContent>
-<<<<<<< HEAD
                                 <MudText>@product</MudText>
                                 <MudText Typo="Typo.body2">@product</MudText>
-=======
-                                <MudText>Products[@i]name</MudText>
-                                <MudText Typo="Typo.body2">Products[@i]price</MudText>
->>>>>>> f76e8fe643614c8c9cabcdbe197896a89874ed95
                             </MudCardContent>
                         </MudCard>
                     </MudItem>
@@ -52,21 +43,13 @@
             }
             else
             {
-<<<<<<< HEAD
                 foreach (var farmer in Farmers)
-=======
-                for (var i = 0; i < Farmers.Count; i++)
->>>>>>> f76e8fe643614c8c9cabcdbe197896a89874ed95
                 {
                     <MudItem>
                         <MudCard Elevation="10" Height="180px" Width="172px">
                             <MudPaper Height="110px" Width="172px" />
                             <MudCardContent>
-<<<<<<< HEAD
                                 <MudText>@farmer</MudText>
-=======
-                                <MudText>Farmers[@i].name</MudText>
->>>>>>> f76e8fe643614c8c9cabcdbe197896a89874ed95
                             </MudCardContent>
                         </MudCard>
                     </MudItem>
@@ -78,13 +61,8 @@
 
 @code {
     public string TextValue { get; set; }
-<<<<<<< HEAD
     public List<Product> Products = new List<Product>();
     public List<string> Farmers = new List<string>();
-=======
-    public List<Product> Products { get; set; }
-    public List<string> Farmers { get; set; }
->>>>>>> f76e8fe643614c8c9cabcdbe197896a89874ed95
     private DataCart.Item[] items;
     private MudTheme Theme = new MudTheme();
 
@@ -102,11 +80,6 @@
             {
                 if (items[i].name == search_text)
                 {
-<<<<<<< HEAD
-
-=======
-                    
->>>>>>> f76e8fe643614c8c9cabcdbe197896a89874ed95
                 }
             }
 
@@ -138,37 +111,20 @@
 
     private async Task SearchProducts()
     {
-<<<<<<< HEAD
         HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/search-products") };
-=======
-        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/search") };
->>>>>>> f76e8fe643614c8c9cabcdbe197896a89874ed95
 
         HttpResponseMessage response = null;
         response = await client.GetAsync(client.BaseAddress);
 
         var data = await response.Content.ReadAsStringAsync();
-<<<<<<< HEAD
         Products = JsonConvert.DeserializeObject<List<Product>>(data);
-=======
-        dynamic accounts = JsonConvert.DeserializeObject(data);
-
-        foreach (var account in accounts)
-        {
-            Products.Add(account.inventory);
-        }
->>>>>>> f76e8fe643614c8c9cabcdbe197896a89874ed95
 
         return;
     }
 
     private async Task SearchFarmers()
     {
-<<<<<<< HEAD
         HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/search-farmers") };
-=======
-        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/search") };
->>>>>>> f76e8fe643614c8c9cabcdbe197896a89874ed95
 
         HttpResponseMessage response = null;
         response = await client.GetAsync(client.BaseAddress);
@@ -178,11 +134,7 @@
 
         foreach (var account in accounts)
         {
-<<<<<<< HEAD
             Farmers.Add((string)account.name);
-=======
-            Farmers.Add(account.name);
->>>>>>> f76e8fe643614c8c9cabcdbe197896a89874ed95
         }
 
         return;
@@ -191,7 +143,6 @@
     protected override async Task OnInitializedAsync()
     {
         items = await DataCart.getCart();
-<<<<<<< HEAD
         await SearchProducts();
         await SearchFarmers();
     }
@@ -202,9 +153,3 @@
         visibility: hidden;
     }
 </style>
-=======
-        // await SearchProducts();
-        // await SearchFarmers();
-    }
-}
->>>>>>> f76e8fe643614c8c9cabcdbe197896a89874ed95
