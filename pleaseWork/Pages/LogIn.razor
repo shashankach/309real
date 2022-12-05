@@ -6,15 +6,20 @@
 @page "/"
 
 <div id="body">
-  <MudStack AlignItems="AlignItems.Center" Spacing="16">
-      <MudText Typo="Typo.h2">Farmer's Mercato</MudText>
-      <MudTextField @bind-Value="UsernameTextValue" Label="Username" FullWidth="true" Variant="Variant.Filled"></MudTextField>
-      <MudTextField @bind-Value="PasswordTextValue" Label="Password" FullWidth="true" Variant="Variant.Filled" InputType=InputType.Password></MudTextField>
-      <MudButton Class="mt-2" @onclick="SignIn" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" FullWidth="true">LOG IN</MudButton>
-      @*<MudText Typo="Typo.h6">Don't have an account?</MudText>*@
-      <MudButton Variant="Variant.Outlined" Size="Size.Large" Color="Color.Primary" FullWidth="true" Href="/sign-up">Sign Up</MudButton>
-  </MudStack>
+
+    <MudStack AlignItems="AlignItems.Center" Spacing="16">
+        <MudText Typo="Typo.h2">Farmer's Mercato</MudText>
+        <MudTextField @bind-Value="UsernameTextValue" Label="Username" FullWidth="true" Variant="Variant.Filled"></MudTextField>
+        <MudTextField @bind-Value="PasswordTextValue" Label="Password" FullWidth="true" Variant="Variant.Filled" InputType=InputType.Password></MudTextField>
+        <MudButton Class="mt-2 ma-10" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" FullWidth="true" Href="/search">LOG IN</MudButton>
+    </MudStack>
+        <MudText Typo="Typo.h5" Class="d-inline ">Don't have an account?</MudText>
+        <MudText Typo="Typo.h5" Class="d-inline"><a Href="/sign-up"> Sign Up</a></MudText>
+        @*<MudButton Variant="Variant.Outlined" Size="Size.Large" Color="Color.Primary" Href="/sign-up">Sign Up</MudButton>*@
+
 </div>
+    
+
 
 @code {
     public string UsernameTextValue { get; set; }
