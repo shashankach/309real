@@ -1,4 +1,6 @@
 ﻿@using Models
+@using Newtonsoft.Json;
+
 @page "/remove-product"
 @inject IDialogService DialogService
 
@@ -25,16 +27,17 @@
     }
     else
     {
-        foreach (var product in Products)
+        foreach (Models.Product product in Products)
         {
             <MudItem>
                 <MudCard Elevation="10" Height="180px" Width="172px">
                     <MudPaper Height="110px" Width="172px" />
                     <MudCardContent>
-                        <MudText>@product</MudText>
-                        <MudText Typo="Typo.body2">@product</MudText>
+                        <MudText>@product.name</MudText>
+                        <MudText Typo="Typo.body2">@product.price</MudText>
+                        <MudText @bind-Value="sellerText" Typo="Typo.body2" id="seller">@product.seller</MudText>
                     </MudCardContent>
-                    <MudButton @onclick="Remove_Product('@(product)')" Variant="Variant.Outlined" Size="Size.Small" Color="Color.Primary" FullWidth="true">Remove</MudButton>
+                    <MudButton @onclick="@(()=>Remove_Product(product))" Variant="Variant.Outlined" Size="Size.Small" Color="Color.Primary" FullWidth="true">Remove</MudButton>
                 </MudCard>
             </MudItem>
         }
@@ -42,7 +45,26 @@
 </MudGrid>
 
 @code {
-    public List<Product> Products = new List<Product>();
+    public string sellerText { get; set; }
+    public List<Models.Product> Products = new List<Models.Product>();
+
+    private async Task GetProducts()
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/search-products") };
+
+        HttpResponseMessage response = null;
+        response = await client.GetAsync(client.BaseAddress);
+
+        var data = await response.Content.ReadAsStringAsync();
+        Products = JsonConvert.DeserializeObject<List<Models.Product>>(data);
+
+        return;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetProducts();
+    }
 
     private void OpenDialog()
     {
@@ -50,23 +72,13 @@
         DialogService.Show<RemoveProductDialog>("Product successfully removed", options);
     }
 
-    private async Task Remove_Product(Product product)
+    private async Task Remove_Product(Models.Product inProduct)
     {
-        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/remove-product") };
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/remove-product-" + inProduct.name + "-" + inProduct.seller) };
 
         HttpResponseMessage response = null;
 
-        var p = new Models.Product()
-        {
-            name = product.name,
-            price = product.price,
-            seller = product.seller,
-            image = product.image,
-        };
-
-        var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(p), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
-
-        response = await client.PostAsync(client.BaseAddress, payloadString);
+        response = await client.DeleteAsync(client.BaseAddress);
 
         OpenDialog();
     }
@@ -79,5 +91,9 @@
 
     #body {
         text-align: center;
+    }
+
+    #seller {
+        visibility: hidden;
     }
 </style>
