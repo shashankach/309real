@@ -58,6 +58,7 @@
       <None Remove="MudBlazor.ThemeManager" />
       <None Remove="BlazorGoogleMaps" />
       <None Remove="BlazorGoogleMapsV3" />
+      <None Remove="Resources\Images\" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="MudBlazor" Version="6.1.2" />
@@ -66,6 +67,6 @@
       <PackageReference Include="BlazorGoogleMapsV3" Version="1.1.0" />
     </ItemGroup>
     <ItemGroup>
-      <BundleResource Include="Resources\Images\*" />
+      <Folder Include="Resources\Images\" />
     </ItemGroup>
 </Project>
