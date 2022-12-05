@@ -6,10 +6,6 @@
 @using Newtonsoft.Json;
 
 <MudTextField @bind-Value="@search_text" @onkeydown="@Enter" Label="Search" Variant="Variant.Filled"></MudTextField>
-<div id="search-button">
-    @*<MudButton Variant="Variant.Filled" DisableElevation="true" OnClick="beginSearch">Search</MudButton>*@
-</div>
-@*HelperText="@results_text"*@
 
 <MudTabs Elevation="2" Rounded="true" Centered="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
     <MudTabPanel Text="Produce">
@@ -64,38 +60,15 @@
     public string TextValue { get; set; }
     public List<Models.Product> Products = new List<Models.Product>();
     public List<string> Farmers = new List<string>();
-    private DataCart.Item[] items;
     private MudTheme Theme = new MudTheme();
 
     string search_text = "";
-    string results_text = "";
 
-    //String[] items = { "Apples", "Bananas", "Carrots", "Apples", "Cherries" };
-
-    private void Enter(KeyboardEventArgs e)
+    private async void Enter(KeyboardEventArgs e)
     {
         if (e.Code == "Enter" || e.Code == "NumpadEnter")
         {
-            int results_count = 0;
-            for (int i = 0; i < items.Length; i++)
-            {
-                if (items[i].name == search_text)
-                {
-                }
-            }
-
-            if (results_count == 0)
-            {
-                results_text = "No results found for " + search_text;
-            }
-            else if (results_count == 1)
-            {
-                results_text = results_count + " result for " + search_text;
-            }
-            else
-            {
-                results_text = results_count + " results for " + search_text;
-            }
+            await OnInitializedAsync();
         }
     }
 
@@ -105,12 +78,7 @@
         NavManager.NavigateTo("/product");
     }
 
-    public DataCart.Item[] getCart()
-    {
-        return DataCart.getCart2();
-    }
-
-    private async Task SearchProducts()
+    private async Task<List<Models.Product>> SearchProducts(string search_text)
     {
         HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/search-products") };
 
@@ -118,12 +86,29 @@
         response = await client.GetAsync(client.BaseAddress);
 
         var data = await response.Content.ReadAsStringAsync();
-        Products = JsonConvert.DeserializeObject<List<Models.Product>>(data);
 
-        return;
+        List<Models.Product> products = new List<Models.Product>();
+        products = JsonConvert.DeserializeObject<List<Models.Product>>(data);
+
+        if (search_text != "")
+        {
+            List<Models.Product> filteredProducts = new List<Models.Product>();
+
+            foreach (Models.Product product in products)
+            {
+                if (product.name.ToLower().Contains(search_text.ToLower()))
+                {
+                    filteredProducts.Add(product);
+                }
+            }
+
+            products = filteredProducts;
+        }
+
+        return products;
     }
 
-    private async Task SearchFarmers()
+    private async Task<List<string>> SearchFarmers(string search_text)
     {
         HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/search-farmers") };
 
@@ -133,19 +118,30 @@
         var data = await response.Content.ReadAsStringAsync();
         dynamic accounts = JsonConvert.DeserializeObject(data);
 
+        List<string> farmers = new List<string>();
+
         foreach (var account in accounts)
         {
-            Farmers.Add((string)account.name);
+            if (search_text == "")
+            {
+                farmers.Add((string)account.name);
+            }
+            else
+            {
+                if (account.name.ToString().ToLower().Contains(search_text.ToLower()))
+                {
+                    farmers.Add((string)account.name);
+                }
+            }
         }
 
-        return;
+        return farmers;
     }
 
     protected override async Task OnInitializedAsync()
     {
-        items = await DataCart.getCart();
-        await SearchProducts();
-        await SearchFarmers();
+        Products = await SearchProducts(search_text);
+        Farmers = await SearchFarmers(search_text);
     }
 }
 
