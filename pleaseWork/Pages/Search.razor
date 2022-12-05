@@ -20,14 +20,14 @@
             }
             else
             {
-                for(var i = 0; i < Products.Count; i++)
+                foreach (var product in Products)
                 {
                     <MudItem>
                         <MudCard Elevation="10" Height="180px" Width="172px">
                             <MudPaper Height="110px" Width="172px" />
                             <MudCardContent>
-                                <MudText>Products[@i]name</MudText>
-                                <MudText Typo="Typo.body2">Products[@i]price</MudText>
+                                <MudText>@product</MudText>
+                                <MudText Typo="Typo.body2">@product</MudText>
                             </MudCardContent>
                         </MudCard>
                     </MudItem>
@@ -43,13 +43,13 @@
             }
             else
             {
-                for (var i = 0; i < Farmers.Count; i++)
+                foreach (var farmer in Farmers)
                 {
                     <MudItem>
                         <MudCard Elevation="10" Height="180px" Width="172px">
                             <MudPaper Height="110px" Width="172px" />
                             <MudCardContent>
-                                <MudText>Farmers[@i].name</MudText>
+                                <MudText>@farmer</MudText>
                             </MudCardContent>
                         </MudCard>
                     </MudItem>
@@ -61,8 +61,8 @@
 
 @code {
     public string TextValue { get; set; }
-    public List<Product> Products { get; set; }
-    public List<string> Farmers { get; set; }
+    public List<Product> Products = new List<Product>();
+    public List<string> Farmers = new List<string>();
     private DataCart.Item[] items;
     private MudTheme Theme = new MudTheme();
 
@@ -80,7 +80,7 @@
             {
                 if (items[i].name == search_text)
                 {
-                    
+
                 }
             }
 
@@ -112,25 +112,20 @@
 
     private async Task SearchProducts()
     {
-        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/search") };
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/search-products") };
 
         HttpResponseMessage response = null;
         response = await client.GetAsync(client.BaseAddress);
 
         var data = await response.Content.ReadAsStringAsync();
-        dynamic accounts = JsonConvert.DeserializeObject(data);
-
-        foreach (var account in accounts)
-        {
-            Products.Add(account.inventory);
-        }
+        Products = JsonConvert.DeserializeObject<List<Product>>(data);
 
         return;
     }
 
     private async Task SearchFarmers()
     {
-        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/search") };
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/search-farmers") };
 
         HttpResponseMessage response = null;
         response = await client.GetAsync(client.BaseAddress);
@@ -140,7 +135,7 @@
 
         foreach (var account in accounts)
         {
-            Farmers.Add(account.name);
+            Farmers.Add((string)account.name);
         }
 
         return;
@@ -149,7 +144,13 @@
     protected override async Task OnInitializedAsync()
     {
         items = await DataCart.getCart();
-        // await SearchProducts();
-        // await SearchFarmers();
+        await SearchProducts();
+        await SearchFarmers();
     }
 }
+
+<style>
+    #farmer-nav-bar {
+        visibility: hidden;
+    }
+</style>
