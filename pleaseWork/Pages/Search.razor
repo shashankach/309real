@@ -20,14 +20,15 @@
             }
             else
             {
-                foreach (var product in Products)
+                foreach (Models.Product product in Products)
                 {
                     <MudItem>
                         <MudCard Elevation="10" Height="180px" Width="172px">
                             <MudPaper Height="110px" Width="172px" />
                             <MudCardContent>
-                                <MudText>@product</MudText>
-                                <MudText Typo="Typo.body2">@product</MudText>
+                                <MudText>@product.name</MudText>
+                                <MudText Typo="Typo.body2">@product.price</MudText>
+                                <MudText Typo="Typo.body2" id="seller">@product.seller</MudText>
                             </MudCardContent>
                         </MudCard>
                     </MudItem>
@@ -61,7 +62,7 @@
 
 @code {
     public string TextValue { get; set; }
-    public List<Product> Products = new List<Product>();
+    public List<Models.Product> Products = new List<Models.Product>();
     public List<string> Farmers = new List<string>();
     private DataCart.Item[] items;
     private MudTheme Theme = new MudTheme();
@@ -117,7 +118,7 @@
         response = await client.GetAsync(client.BaseAddress);
 
         var data = await response.Content.ReadAsStringAsync();
-        Products = JsonConvert.DeserializeObject<List<Product>>(data);
+        Products = JsonConvert.DeserializeObject<List<Models.Product>>(data);
 
         return;
     }
@@ -150,6 +151,10 @@
 
 <style>
     #farmer-nav-bar {
+        visibility: hidden;
+    }
+
+    #seller {
         visibility: hidden;
     }
 </style>

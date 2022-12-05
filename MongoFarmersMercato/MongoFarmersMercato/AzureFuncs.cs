@@ -13,6 +13,7 @@ using MongoDB.Driver;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Routing;
 
 namespace MongoFarmersMercato
 {
@@ -41,6 +42,7 @@ namespace MongoFarmersMercato
         public string image { get; set; }
     }
 
+    [BsonIgnoreExtraElements]
     public class Product
     {
         [BsonElement("name")]
@@ -178,7 +180,7 @@ namespace MongoFarmersMercato
 
         [FunctionName("remove-product")]
         public static async Task<IActionResult> RemoveProduct(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "remove-product")] HttpRequest req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "remove-product-{name}-{seller}")] HttpRequest req, string name, string seller)
         {
             try
             {
@@ -187,12 +189,8 @@ namespace MongoFarmersMercato
                 var database = client.GetDatabase("MongoFarmersMercato");
                 var collection = database.GetCollection<Product>("products");
 
-                var userInput = await new StreamReader(req.Body).ReadToEndAsync();
-
-                Product product = JsonConvert.DeserializeObject<Product>(userInput);
-
-                await collection.DeleteOneAsync(Builders<Product>.Filter.Eq(p => p.name, product.name) &
-                    Builders<Product>.Filter.Eq(p => p.seller, product.seller));
+                await collection.DeleteOneAsync(Builders<Product>.Filter.Eq(p => p.name, name) &
+                    Builders<Product>.Filter.Eq(p => p.seller, seller));
             }
             catch (Exception e)
             {
