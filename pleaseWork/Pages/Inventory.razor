@@ -1,7 +1,8 @@
 ﻿@using Models
+@using Newtonsoft.Json;
+
 @page "/inventory"
 @inject IDialogService DialogService
-@using Newtonsoft.Json;
 
 <div id="body">
     <center>
@@ -26,14 +27,15 @@
     }
     else
     {
-        foreach (var product in Products)
+        foreach (Models.Product product in Products)
         {
             <MudItem>
                 <MudCard Elevation="10" Height="180px" Width="172px">
                     <MudPaper Height="110px" Width="172px" />
                     <MudCardContent>
-                        <MudText>@product</MudText>
-                        <MudText Typo="Typo.body2">@product</MudText>
+                        <MudText>@product.name</MudText>
+                        <MudText Typo="Typo.body2">@product.price</MudText>
+                        <MudText @bind-Value="sellerText" Typo="Typo.body2" id="seller">@product.seller</MudText>
                     </MudCardContent>
                 </MudCard>
             </MudItem>
@@ -44,7 +46,7 @@
 
 @code {
     public string sellerText { get; set; }
-    public List<Product> Products = new List<Product>();
+    public List<Models.Product> Products = new List<Models.Product>();
 
     private async Task GetProducts()
     {
@@ -54,15 +56,7 @@
         response = await client.GetAsync(client.BaseAddress);
 
         var data = await response.Content.ReadAsStringAsync();
-        dynamic products = JsonConvert.DeserializeObject(data);
-
-        foreach (var product in products)
-        {
-            if (product.seller == sellerText)
-            {
-                Products.Add(product);
-            }
-        }
+        Products = JsonConvert.DeserializeObject<List<Models.Product>>(data);
 
         return;
     }
@@ -80,5 +74,8 @@
 
     #body {
         text-align: center;
+    }
+    #seller {
+        visibility: hidden;
     }
 </style>
