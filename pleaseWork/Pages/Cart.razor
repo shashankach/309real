@@ -1,6 +1,7 @@
 ﻿@page "/cart"
 
 @using Newtonsoft.Json;
+@inject NavigationManager NavManager
 @inject IDialogService DialogService
 
 
@@ -40,7 +41,7 @@
 <MudText Typo="Typo.h5" Class="d-inline align-end">@totalText</MudText>
       
 
-<MudButton Class="mt-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" Href="/billing">Checkout</MudButton>
+<MudButton Class="mt-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" @onclick="SendOrder">Checkout</MudButton>
 
 
 @code {
@@ -94,7 +95,54 @@
             total += product.price;
         }
 
-        totalText = "$" + total.ToString();
+        totalText = "$" + Math.Round(total, 2);
+
+        return;
+    }
+
+    private async Task SendOrder()
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/add-order") };
+
+        HttpResponseMessage response = null;
+
+        var order = new Models.Order()
+            {
+                id = GenerateId(),
+                items = InCart
+            };
+
+        var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(order), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
+
+        response = await client.PostAsync(client.BaseAddress, payloadString);
+
+        await EmptyCart();
+    }
+
+    public static string GenerateId()
+    {
+        string[] ingredients = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,1,2,3,4,5,6,7,8,9,0".Split(',');
+        string result = "";
+
+        Random rnd = new Random();
+        for (int i = 0; i < 8; i++)
+        {
+            string rndIngr = ingredients[rnd.Next(ingredients.Length)];
+            result += rndIngr;
+        }
+
+        return result;
+    }
+
+    private async Task EmptyCart()
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/empty-cart") };
+
+        HttpResponseMessage response = null;
+
+        response = await client.DeleteAsync(client.BaseAddress);
+
+        NavManager.NavigateTo("/billing");
 
         return;
     }

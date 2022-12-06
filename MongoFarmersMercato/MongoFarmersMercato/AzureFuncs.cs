@@ -56,6 +56,16 @@ namespace MongoFarmersMercato
         public string image { get; set; }
     }
 
+    [BsonIgnoreExtraElements]
+    public class Order
+    {
+        [BsonElement("id")]
+        public string id { get; set; }
+
+        [BsonElement("items")]
+        public List<Product> items { get; set; }
+    }
+
     public static class AzureFuncs
     {
         [FunctionName("sign-up")]
@@ -291,6 +301,77 @@ namespace MongoFarmersMercato
                 return new List<Product>();
 
             }
+        }
+
+        [FunctionName("add-order")]
+        public static async Task<IActionResult> AddOrder(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "add-order")] HttpRequest req)
+        {
+            try
+            {
+                string connectionString = "mongodb+srv://farmersmercatoadmin:3y1C4McLKhvGA3Ae@farmersmercato.fmitmu2.mongodb.net/test";
+                var client = new MongoClient(connectionString);
+                var database = client.GetDatabase("MongoFarmersMercato");
+                var collection = database.GetCollection<Order>("orders");
+
+                var userInput = await new StreamReader(req.Body).ReadToEndAsync();
+
+                Order order = JsonConvert.DeserializeObject<Order>(userInput);
+
+                await collection.InsertOneAsync(order);
+
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult("Error adding order - " + e.Message);
+
+            }
+
+            return (ActionResult)new OkObjectResult("Successfully added order");
+        }
+
+        [FunctionName("get-orders")]
+        public static async Task<List<Order>> GetOrders(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "get-orders")] HttpRequest req)
+        {
+            try
+            {
+                string connectionString = "mongodb+srv://farmersmercatoadmin:3y1C4McLKhvGA3Ae@farmersmercato.fmitmu2.mongodb.net/test";
+                var client = new MongoClient(connectionString);
+                var database = client.GetDatabase("MongoFarmersMercato");
+                var collection = database.GetCollection<Order>("orders");
+
+                var orders = await collection.Find(_ => true).ToListAsync();
+
+                return orders;
+            }
+            catch (Exception)
+            {
+                return new List<Order>();
+
+            }
+        }
+
+        [FunctionName("complete-order")]
+        public static async Task<IActionResult> CompleteOrder(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "complete-order-{id}")] HttpRequest req, string id)
+        {
+            try
+            {
+                string connectionString = "mongodb+srv://farmersmercatoadmin:3y1C4McLKhvGA3Ae@farmersmercato.fmitmu2.mongodb.net/test";
+                var client = new MongoClient(connectionString);
+                var database = client.GetDatabase("MongoFarmersMercato");
+                var collection = database.GetCollection<Order>("orders");
+
+                await collection.DeleteOneAsync(Builders<Order>.Filter.Eq(x => x.id, id));
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult("Error completing order - " + e.Message);
+
+            }
+
+            return (ActionResult)new OkObjectResult("Successfully completed order");
         }
     }
 }
