@@ -1,4 +1,14 @@
+
 @page "/orders"
+
+
+<MudAppBar Color="Color.Secondary" Fixed="false">
+    <MudIconButton Icon="@Icons.Filled.ArrowBack" Color="Color.Primary" Edge="Edge.Start" Href="/Account" />
+    <MudSpacer />
+    <MudText Color="Color.Dark" Typo="Typo.h6">Orders</MudText>
+    <MudSpacer />
+</MudAppBar>
+
 
 @inject IDialogService DialogService
 @using Newtonsoft.Json;
