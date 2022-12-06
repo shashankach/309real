@@ -3,17 +3,30 @@
 @using Newtonsoft.Json;
 
 
-<MudImage Src="https://i.imgur.com/54e6tXY.png" Alt="Mony the dog" Elevation="25" Class="rounded-lg" Width="200" Height="150"/>
-<MudText Align="Align.Center" Typo="Typo.h4">Your Name</MudText>
-<MudText Align="Align.Center" Typo="Typo.h4">Your email</MudText>
-<MudText Align="Align.Center" Typo="Typo.h4">Your number</MudText>
+<MudAppBar Color="Color.Secondary" Fixed="false">
+    <MudIconButton Icon="@Icons.Filled.ArrowBack" Color="Color.Primary" Edge="Edge.Start" />
+    <MudSpacer />
+    <MudText Color="Color.Dark" Typo="Typo.h6">Account</MudText>
+    <MudSpacer />
+</MudAppBar>
+
+<MudImage Src="https://i.imgur.com/54e6tXY.png" Alt="Mony the dog" Elevation="25" Class="rounded-lg mx-auto pa-6" Width="200" Height="150" />
+<MudText Align="Align.Center" Typo="Typo.h5">Your Name</MudText>
+<MudText Align="Align.Center" Typo="Typo.h6">Your email</MudText>
 
 
-<MudText Typo="Typo.h5">Change Password</MudText>
-<MudText Typo="Typo.h5">Payment</MudText>
-<MudText Typo="Typo.h5">Delivery Address</MudText>
+<MudDivider DividerType="DividerType.Middle" Class="my-6" />
 
-
+<MudStack>
+    <MudButton Variant="Variant.Text" Href="/orders">Profile</MudButton>
+    <MudDivider />
+    <MudButton Variant="Variant.Text" Href="/orders">Orders</MudButton>
+    <MudDivider />
+    <MudButton Variant="Variant.Text" Href="/orders">Address</MudButton>
+    <MudDivider />
+    <MudButton Variant="Variant.Text" Href="/orders">Payment</MudButton>
+    <MudDivider />
+</MudStack>
 
 
 <MudButton Class="mt-2" Variant="Variant.Filled" Color="Color.Inherit" Href="/">Logout</MudButton>
