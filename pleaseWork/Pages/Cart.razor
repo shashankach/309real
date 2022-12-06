@@ -14,7 +14,7 @@
 <MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
     @if (InCart == null || InCart.Count == 0)
     {
-        <MudText Typo="Typo.subtitle2">Cart is empty.</MudText>
+        <MudText Typo="Typo.body2">Cart is empty.</MudText>
     }
     else
     {
@@ -22,7 +22,7 @@
         {
             <MudItem>
                 <MudCard>
-                    <MudCardMedia Image=@item.image Height="200" />
+                    <MudCardMedia Image="images/carrots.jpg" Height="200" />
                     <MudCardContent>
                         <MudText Typo="Typo.h5">@item.name</MudText>
                         <MudText Typo="Typo.body2">@item.price</MudText>
@@ -37,10 +37,9 @@
     }
 </MudGrid>
 
-<MudText Typo="Typo.h5" Class="d-inline align-start">Total:</MudText>
-<MudSpacer />
+<MudText Typo="Typo.h5" Class="d-inline align-start">Total</MudText>
 <MudText Typo="Typo.h5" Class="d-inline align-end">@totalText</MudText>
-
+      
 
 <MudButton Class="mt-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" @onclick="SendOrder">Checkout</MudButton>
 
@@ -99,9 +98,46 @@
         totalText = "$" + Math.Round(total, 2);
 
         return;
-
     }
 
+    private void OpenDialog2()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<EmptyCartDialog>("Cart is empty", options);
+    }
+
+    private bool cartIsEmpty()
+    {
+        return !InCart.Any();
+    }
+
+    private async Task SendOrder()
+    {
+        if (cartIsEmpty())
+        {
+            OpenDialog2();
+        }
+        else
+        {
+
+            HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/add-order") };
+
+            HttpResponseMessage response = null;
+
+            var order = new Models.Order()
+            {
+                id = GenerateId(),
+                items = InCart
+            };
+
+            var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(order), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
+
+            response = await client.PostAsync(client.BaseAddress, payloadString);
+
+            await EmptyCart();
+        }
+    }
+    /*
     private async Task SendOrder()
     {
         HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/add-order") };
@@ -109,10 +145,10 @@
         HttpResponseMessage response = null;
 
         var order = new Models.Order()
-        {
-            id = GenerateId(),
-            items = InCart
-        };
+            {
+                id = GenerateId(),
+                items = InCart
+            };
 
         var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(order), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
 
@@ -120,7 +156,7 @@
 
         await EmptyCart();
     }
-
+    */
     public static string GenerateId()
     {
         string[] ingredients = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,1,2,3,4,5,6,7,8,9,0".Split(',');
