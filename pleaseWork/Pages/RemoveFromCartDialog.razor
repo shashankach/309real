@@ -1,0 +1,14 @@
+﻿@page "/remove-from-cart-dialog"
+
+<MudDialog>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="Submit" Href="/cart">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+}

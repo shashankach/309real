@@ -73,4 +73,7 @@
     <ItemGroup>
       <BundleResource Include="Resources\Images\*" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Pages\images\" />
+    </ItemGroup>
 </Project>

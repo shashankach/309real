@@ -46,8 +46,7 @@
             farmer = SelectedOption == "farmer" ? true : false,
             name = NameTextValue,
             email = EmailTextValue,
-            image = null,
-            cart = null
+            image = null
         };
 
         var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(acct), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
