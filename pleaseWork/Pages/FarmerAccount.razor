@@ -14,9 +14,10 @@
 <MudText Typo="Typo.h5">Payment</MudText>
 
 
-<MudButton Class="mt-2" @onclick="LogOutUser" Variant="Variant.Filled" Color="Color.Inherit">Logout</MudButton>
+<MudButton Class="mt-2" Variant="Variant.Filled" Color="Color.Inherit" Href="/">Logout</MudButton>
 
 @code {
+    /*
     private async Task LogOutUser()
     {
         HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/log-in") };
@@ -31,7 +32,7 @@
         {
             if (account.loggedIn == true)
             {
-                UpdateLoggedInVar(account.username, false);
+               UpdateLoggedInVar(account.username, false);
             }
         }
 
@@ -39,9 +40,9 @@
 
         return;
     }
-
+    
     private async Task UpdateLoggedInVar(string username, bool isLoggedIn)
-    {
+        {
         HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/update-loggedIn-" + username) };
 
         HttpResponseMessage response = null;
@@ -50,8 +51,9 @@
 
         response = await client.PutAsync(client.BaseAddress, payloadString);
 
-        return;
+    return;
     }
+    */
 }
 
 <style>

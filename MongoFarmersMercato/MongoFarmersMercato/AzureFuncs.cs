@@ -204,7 +204,7 @@ namespace MongoFarmersMercato
             return (ActionResult)new OkObjectResult("Successfully removed product");
         }
 
-        [FunctionName("add-to-cart")]
+        /*[FunctionName("add-to-cart")]
         public static async Task<IActionResult> AddToCart(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "add-to-cart-{username}-{cart}")] HttpRequest req, string username, List<Product> cart)
         {
@@ -235,9 +235,9 @@ namespace MongoFarmersMercato
             }
 
             return (ActionResult)new OkObjectResult("Successfully added to cart");
-        }
+        }*/
 
-        [FunctionName("update-loggedIn")]
+        /*[FunctionName("update-loggedIn")]
         public static async Task<IActionResult> UpdateLoggedIn(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "update-loggedIn-{username}")] HttpRequest req, string username)
         {
@@ -259,6 +259,6 @@ namespace MongoFarmersMercato
             }
 
             return (ActionResult)new OkObjectResult("Successfully updated loggedIn");
-        }
+        }*/
     }
 }
