@@ -60,6 +60,7 @@
       <None Remove="BlazorGoogleMapsV3" />
     </ItemGroup>
     <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="11.4.0" />
       <PackageReference Include="MudBlazor" Version="6.1.2" />
       <PackageReference Include="MudBlazor.ThemeManager" Version="1.0.7" />
 
