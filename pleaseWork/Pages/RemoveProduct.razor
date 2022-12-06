@@ -1,0 +1,99 @@
+﻿@using Models
+@using Newtonsoft.Json;
+
+@page "/remove-product"
+@inject IDialogService DialogService
+
+<div id="body">
+    <center>
+        <MudPaper Elevation="10" Height="47px" Width="100%">
+            <MudText Class="pt-2" Typo="Typo.h5">Remove Products</MudText>
+        </MudPaper>
+    </center>
+</div>
+<MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
+    <MudItem>
+        <MudButton Variant="Variant.Outlined" Size="Size.Large" Color="Color.Primary" FullWidth="true" Href="/add-product">Add Product</MudButton>
+    </MudItem>
+    <MudItem>
+        <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" FullWidth="true" Href="/remove-product">Remove Product</MudButton>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
+    @if (Products == null || Products.Count == 0)
+    {
+        <MudText Typo="Typo.body2">No results found.</MudText>
+    }
+    else
+    {
+        foreach (Models.Product product in Products)
+        {
+            <MudItem>
+                <MudCard Elevation="10" Height="180px" Width="172px">
+                    <MudPaper Height="110px" Width="172px" />
+                    <MudCardContent>
+                        <MudText>@product.name</MudText>
+                        <MudText Typo="Typo.body2">@product.price</MudText>
+                        <MudText @bind-Value="sellerText" Typo="Typo.body2" id="seller">@product.seller</MudText>
+                    </MudCardContent>
+                    <MudButton @onclick="@(()=>Remove_Product(product))" Variant="Variant.Outlined" Size="Size.Small" Color="Color.Primary" FullWidth="true">Remove</MudButton>
+                </MudCard>
+            </MudItem>
+        }
+    }
+</MudGrid>
+
+@code {
+    public string sellerText { get; set; }
+    public List<Models.Product> Products = new List<Models.Product>();
+
+    private async Task GetProducts()
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/search-products") };
+
+        HttpResponseMessage response = null;
+        response = await client.GetAsync(client.BaseAddress);
+
+        var data = await response.Content.ReadAsStringAsync();
+        Products = JsonConvert.DeserializeObject<List<Models.Product>>(data);
+
+        return;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetProducts();
+    }
+
+    private void OpenDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<RemoveProductDialog>("Product successfully removed", options);
+    }
+
+    private async Task Remove_Product(Models.Product inProduct)
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/remove-product-" + inProduct.name + "-" + inProduct.seller) };
+
+        HttpResponseMessage response = null;
+
+        response = await client.DeleteAsync(client.BaseAddress);
+
+        OpenDialog();
+    }
+}
+
+<style>
+    #user-nav-bar {
+        visibility: hidden;
+    }
+
+    #body {
+        text-align: center;
+    }
+    
+    #seller {
+        visibility: hidden;
+    }
+</style>

@@ -61,10 +61,15 @@
       <None Remove="Resources\Images\" />
     </ItemGroup>
     <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="11.4.0" />
       <PackageReference Include="MudBlazor" Version="6.1.2" />
       <PackageReference Include="MudBlazor.ThemeManager" Version="1.0.7" />
+
       <PackageReference Include="BlazorGoogleMaps" Version="2.3.1" />
       <PackageReference Include="BlazorGoogleMapsV3" Version="1.1.0" />
+
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Resources\Images\" />

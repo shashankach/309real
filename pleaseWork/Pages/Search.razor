@@ -2,117 +2,203 @@
 @inject NavigationManager NavManager
 @inject Data.DataCart DataCart
 @using pleaseWork.Data
+@using Models
+@using Newtonsoft.Json;
+@inject IDialogService DialogService
 
 <MudTextField @bind-Value="@search_text" @onkeydown="@Enter" Label="Search" Variant="Variant.Filled"></MudTextField>
-<div id="search-button">
-    @*<MudButton Variant="Variant.Filled" DisableElevation="true" OnClick="beginSearch">Search</MudButton>*@
-</div>
-@*HelperText="@results_text"*@
 
-<MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
-    <MudItem>
-        <MudCard Elevation="10" Height="180px" Width="172px">
-            <MudCardMedia Height="110" Image="https://i.imgur.com/aeqjjxW.png" />
-            <MudCardContent>
-                <MudText>Bananas</MudText>
-                <MudText Typo="Typo.body2">$3.99</MudText>
-            </MudCardContent>
-        </MudCard>
-    </MudItem>
-    <MudItem>
-        <MudCard Elevation="10" Height="180px" Width="172px">
-            <MudCardMedia Height="110" Image="https://i.imgur.com/TZ1efgX.png" />
-            <MudCardContent>
-                <MudText>Apples</MudText>
-                <MudText Typo="Typo.body2">$3.99</MudText>
-            </MudCardContent>
-        </MudCard>
-    </MudItem>
-    <MudItem>
-        <MudCard Elevation="10" Height="180px" Width="172px">
-            <MudCardMedia Height="110" Image="https://i.imgur.com/N7a3wgL.png" />
-            <MudCardContent>
-                <MudText>Clams</MudText>
-                <MudText Typo="Typo.body2">$3.99</MudText>
-            </MudCardContent>
-        </MudCard>
-    </MudItem>
-    <MudItem>
-        <MudCard Elevation="10" Height="180px" Width="172px">
-            <MudCardMedia Height="110" Image="https://i.imgur.com/54e6tXY.png" />
-            <MudCardContent>
-                <MudText>Radishes</MudText>
-                <MudText Typo="Typo.body2">$3.99</MudText>
-            </MudCardContent>
-        </MudCard>
-    </MudItem>
-    <MudItem @onclick="toProduct">
-        <MudCard Elevation="10" Height="180px" Width="172px">
-            <MudCardMedia Height="110" Image="https://i.imgur.com/54e6tXY.png" />
-            <MudCardContent>
-                <MudText>Carrots</MudText>
-                <MudText Typo="Typo.body2">$3.99</MudText>
-            </MudCardContent>
-        </MudCard>
-    </MudItem>
-    <MudItem @onclick="toProduct">
-        <MudCard Elevation="10" Height="180px" Width="172px">
-            <MudCardMedia Height="110" Image="https://i.imgur.com/EoyKEj0.png" />
-            <MudCardContent>
-                <MudText id="item_name">Carrots</MudText>
-                <MudText Typo="Typo.body2">$3.99</MudText>
-            </MudCardContent>
-        </MudCard>
-    </MudItem>
-</MudGrid>
+<MudTabs Elevation="2" Rounded="true" Centered="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+    <MudTabPanel Text="Produce">
+        <MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
+            @if (Products == null || Products.Count == 0)
+            {
+                <MudText Typo="Typo.body2">No results found.</MudText>
+            }
+            else
+            {
+                foreach (Models.Product product in Products)
+                {
+                    <MudItem>
+                        <MudCard Elevation="10" Height="180px" Width="172px">
+                            <MudPaper Height="110px" Width="172px" />
+                            <MudCardContent>
+                                <MudText>@product.name</MudText>
+                                <MudText Typo="Typo.body2">@product.price</MudText>
+                                <MudText Typo="Typo.body2" id="seller">@product.seller</MudText>
+                            </MudCardContent>
+                            <MudButton @onclick="@(()=>AddtoCart(product))" Variant="Variant.Outlined" Size="Size.Small" Color="Color.Primary" FullWidth="true">Add to Cart</MudButton>
+                        </MudCard>
+                    </MudItem>
+                }
+            }
+        </MudGrid>
+    </MudTabPanel>
+    <MudTabPanel Text="Farmers">
+        <MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
+            @if (Farmers == null || Farmers.Count == 0)
+            {
+                <MudText Typo="Typo.body2">No results found.</MudText>
+            }
+            else
+            {
+                foreach (var farmer in Farmers)
+                {
+                    <MudItem>
+                        <MudCard Elevation="10" Height="180px" Width="172px">
+                            <MudPaper Height="110px" Width="172px" />
+                            <MudCardContent>
+                                <MudText>@farmer</MudText>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                }
+            }
+        </MudGrid>
+    </MudTabPanel>
+</MudTabs>
 
 @code {
-        public string TextValue { get; set; }
-        private DataCart.Item[] items;
-        private MudTheme Theme = new MudTheme();
+    public string TextValue { get; set; }
+    public List<Models.Product> Products = new List<Models.Product>();
+    public List<string> Farmers = new List<string>();
+    private MudTheme Theme = new MudTheme();
 
-        string search_text = "";
-        string results_text = "";
+    string search_text = "";
 
-        //String[] items = { "Apples", "Bananas", "Carrots", "Apples", "Cherries" };
-
-        private void Enter(KeyboardEventArgs e)
+    private async void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
         {
-            if (e.Code == "Enter" || e.Code == "NumpadEnter")
+            await OnInitializedAsync();
+        }
+    }
+
+    private void toProduct()
+    {
+        //Console.WriteLine(s);
+        NavManager.NavigateTo("/product");
+    }
+
+    private async Task<List<Models.Product>> SearchProducts(string search_text)
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/search-products") };
+
+        HttpResponseMessage response = null;
+        response = await client.GetAsync(client.BaseAddress);
+
+        var data = await response.Content.ReadAsStringAsync();
+
+        List<Models.Product> products = new List<Models.Product>();
+        products = JsonConvert.DeserializeObject<List<Models.Product>>(data);
+
+        if (search_text != "")
+        {
+            List<Models.Product> filteredProducts = new List<Models.Product>();
+
+            foreach (Models.Product product in products)
             {
-                int results_count = 0;
-                for (int i = 0; i < items.Length; i++)
+                if (product.name.ToLower().Contains(search_text.ToLower()))
                 {
-                    if (items[i].name == search_text)
-                    {
-
-                    }
+                    filteredProducts.Add(product);
                 }
+            }
 
-                if (results_count == 1)
+            products = filteredProducts;
+        }
+
+        return products;
+    }
+
+    private async Task<List<string>> SearchFarmers(string search_text)
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/search-farmers") };
+
+        HttpResponseMessage response = null;
+        response = await client.GetAsync(client.BaseAddress);
+
+        var data = await response.Content.ReadAsStringAsync();
+        dynamic accounts = JsonConvert.DeserializeObject(data);
+
+        List<string> farmers = new List<string>();
+
+        foreach (var account in accounts)
+        {
+            if (search_text == "")
+            {
+                farmers.Add((string)account.name);
+            }
+            else
+            {
+                if (account.name.ToString().ToLower().Contains(search_text.ToLower()))
                 {
-                    results_text = results_count + " result for " + search_text;
-                }
-                else
-                {
-                    results_text = results_count + " results for " + search_text;
+                    farmers.Add((string)account.name);
                 }
             }
         }
 
-        private void toProduct()
+        return farmers;
+    }
+
+    private void OpenDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<AddtoCartDialog>("Product added to cart", options);
+    }
+
+    private async Task<List<dynamic>> GetUserInfo()
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/log-in") };
+
+        HttpResponseMessage response = null;
+        response = await client.GetAsync(client.BaseAddress);
+
+        var data = await response.Content.ReadAsStringAsync();
+        dynamic accounts = JsonConvert.DeserializeObject(data);
+
+        List<dynamic> result = new List<dynamic>();
+
+        foreach (var account in accounts)
         {
-            //Console.WriteLine(s);
-            NavManager.NavigateTo("/product");
+            if (account.loggedIn == true)
+            {
+                result.Add(account.username);
+                result.Add(account.cart);
+                return result;
+            }
+        }
+
+        return result;
+    }
+
+    private async Task AddtoCart(Models.Product inProduct)
+    {
+        dynamic result = GetUserInfo().Result;
+
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/add-to-cart-" + result[0] + "-" + result[1]) };
+
+        HttpResponseMessage response = null;
+
+        var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(inProduct), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
+
+        response = await client.PutAsync(client.BaseAddress, payloadString);
+
+        OpenDialog();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        items = await DataCart.getCart();
-    }
-
-    public DataCart.Item[] getCart()
-    {
-        return DataCart.getCart2();
+        Products = await SearchProducts(search_text);
+        Farmers = await SearchFarmers(search_text);
     }
 }
+
+<style>
+    #farmer-nav-bar {
+        visibility: hidden;
+    }
+
+    #seller {
+        visibility: hidden;
+    }
+</style>

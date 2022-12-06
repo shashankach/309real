@@ -1,11 +1,11 @@
-﻿@page "/dialog"
+﻿@page "/added"
 
 <MudDialog>
     <DialogContent>
-        You will now be redirected to the Log In page. Please log in to verify your account.
+        Added To Cart!
     </DialogContent>
     <DialogActions>
-        <MudButton Color="Color.Primary" OnClick="Submit" Href="/">Ok</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit" Href="/search">Ok</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -15,3 +15,9 @@
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
 }
+
+<style>
+    #farmer-nav-bar {
+        visibility: hidden;
+    }
+</style>

@@ -1,27 +1,73 @@
-﻿@page "/sign-up"
+﻿@using Models
+
+@page "/sign-up"
 @inject IDialogService DialogService
 
-<h1>Sign Up</h1>
-
-<MudTextField @bind-Value="TextValue" Label="Username" Variant="Variant.Filled"></MudTextField>
-<MudTextField @bind-Value="TextValue" Label="Password" Variant="Variant.Filled"></MudTextField>
-<MudButton @onclick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">SIGN UP</MudButton>
-
-<h3>Already have an account?</h3>
-<h3><a href="/">Log In</a></h3>
+<div id="body">
+    <h1>Sign Up</h1>
+    <MudTextField @bind-Value="NameTextValue" Label="Name" Variant="Variant.Filled"></MudTextField>
+    <MudTextField @bind-Value="EmailTextValue" Label="Email" Variant="Variant.Filled"></MudTextField>
+    <MudTextField @bind-Value="UsernameTextValue" Label="Username" Variant="Variant.Filled"></MudTextField>
+    <MudTextField @bind-Value="PasswordTextValue" Label="Password" Variant="Variant.Filled" InputType=InputType.Password></MudTextField>
+    <MudForm>
+        <MudRadioGroup @bind-SelectedOption="@SelectedOption">
+            <MudRadio Option="@("farmer")" Color="Color.Primary">Farmer</MudRadio>
+            <MudRadio Option="@("customer")" Color="Color.Primary">Customer</MudRadio>
+        </MudRadioGroup>
+    </MudForm>
+    <MudButton Class="mt-2 gap-4" @onclick="AddAccount" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" FullWidth="true">SIGN UP</MudButton>
+    @*<h4>Already have an account?</h4>*@
+    <MudButton Variant="Variant.Outlined" Size="Size.Large" Color="Color.Primary" FullWidth="true" Href="/">Log In</MudButton>
+</div>
 
 @code {
-    public string TextValue { get; set; }
+    public string UsernameTextValue { get; set; }
+    public string PasswordTextValue { get; set; }
+    public string SelectedOption { get; set; }
+    public string NameTextValue { get; set; }
+    public string EmailTextValue { get; set; }
 
     private void OpenDialog()
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
-        DialogService.Show<Dialog>("Account created successfully", options);
+        DialogService.Show<SignUpDialog>("Account created successfully", options);
+    }
+
+    private async Task AddAccount()
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/sign-up") };
+
+        HttpResponseMessage response = null;
+
+        var acct = new User()
+        {
+            username = UsernameTextValue,
+            password = PasswordTextValue,
+            farmer = SelectedOption == "farmer" ? true : false,
+            name = NameTextValue,
+            email = EmailTextValue,
+            image = null,
+            cart = null
+        };
+
+        var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(acct), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
+
+        response = await client.PostAsync(client.BaseAddress, payloadString);
+
+        OpenDialog();
     }
 }
 
 <style>
-    #nav-bar {
+    #user-nav-bar {
         visibility: hidden;
+    }
+
+    #farmer-nav-bar {
+        visibility: hidden;
+    }
+
+    #body {
+        text-align: center;
     }
 </style>

@@ -1,0 +1,21 @@
+﻿@page "/add-to-cart-dialog"
+
+<MudDialog>
+    <DialogContent>
+        Head over to your cart when you are ready to place an order.
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="Submit" Href="/inventory">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+}<h3>AddtoCartDialog</h3>
+
+@code {
+
+}

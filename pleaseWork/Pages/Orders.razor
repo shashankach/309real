@@ -1,0 +1,35 @@
+﻿@page "/orders"
+
+
+<MudAppBar Color="Color.Secondary" Fixed="false">
+    <MudIconButton Icon="@Icons.Filled.ArrowBack" Color="Color.Primary" Edge="Edge.Start" />
+    <MudSpacer />
+    <MudText Color="Color.Dark" Typo="Typo.h6">Orders</MudText>
+    <MudSpacer />
+</MudAppBar>
+
+
+<MudExpansionPanels>
+    <MudExpansionPanel Text="Harrison" MaxHeight="150">
+        <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudPaper Height="110px" Width="172px" />
+            <MudCardContent>
+                <MudText>Bananas</MudText>
+                <MudText Typo="Typo.body2">$3.99</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="Joe" MaxHeight="500">
+        Grapes
+        Blueberries
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="Davide" MaxHeight="1000">
+        Fuck
+        This Shit
+    </MudExpansionPanel>
+    <MudExpansionPanel Text="DaShank">
+        Oranges
+        Peaches
+    </MudExpansionPanel>
+</MudExpansionPanels>
+

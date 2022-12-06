@@ -1,10 +1,169 @@
 ﻿@page "/billing"
+@using FluentValidation
+@inject IDialogService DialogService
 
-<h1>Log in</h1>
-<h3>Sign in to continue</h3>
+<MudCard>
+    <MudForm Model="@model" @ref="@form" Validation="@(orderValidator.ValidateValue)" ValidationDelay="0">
+        <MudCardContent>
+            <MudTextField @bind-Value="model.FullName"
+                          For="@(() => model.FullName)"
+                          Immediate="true"
+                          Label="Full Name" />
 
+            <MudTextField @bind-Value="model.EmailAddress"
+                          For="@(() => model.EmailAddress)"
+                          Immediate="true"
+                          Label="Email Address" />
 
+            <MudTextField @bind-Value="model.PhoneNumber"
+                          For="@(() => model.PhoneNumber)"
+                          Immediate="true"
+                          Label="Phone Number" />
+
+            <MudTextField @bind-Value="model.CreditCardNumber"
+                          For="@(() => model.CreditCardNumber)"
+                          Immediate="true"
+                          Label="Credit Card Number" />
+
+            <MudTextField @bind-Value="model.ExpirationDate"
+                          For="@(() => model.ExpirationDate)"
+                          Immediate="true"
+                          Label="Expiration Date" />
+
+            <MudTextField @bind-Value="model.CVC"
+                          For="@(() => model.CVC)"
+                          Immediate="true"
+                          Label="CVC" />
+
+            <MudTextField @bind-Value="model.Address.Address"
+                          For="@(() => model.Address.Address)"
+                          Immediate="true"
+                          Label="Address" />
+
+            <MudTextField @bind-Value="model.Address.City"
+                          For="@(() => model.Address.City)"
+                          Immediate="true"
+                          Label="City" />
+
+            <MudTextField @bind-Value="model.Address.Country"
+                          For="@(() => model.Address.Country)"
+                          Immediate="true"
+                          Label="Country" />
+        </MudCardContent>
+    </MudForm>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Order</MudButton>
+    </MudCardActions>
+</MudCard>
 
 @code {
-    public string TextValue { get; set; }
+    MudForm form;
+
+    OrderModelFluentValidator orderValidator = new OrderModelFluentValidator();
+
+    OrderModel model = new OrderModel();
+
+    public class OrderModel
+    {
+        public string FullName { get; set; }
+        public string EmailAddress { get; set; }
+        public string PhoneNumber { get; set; }
+        public string CreditCardNumber { get; set; }
+        public string ExpirationDate { get; set; }
+        public string CVC { get; set; }
+        public AddressModel Address { get; set; } = new AddressModel();
+    }
+
+    public class AddressModel
+    {
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
+    }
+
+    private void OpenDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<BillingDialog>("Payment confirmed", options);
+    }
+
+    private async Task Submit()
+    {
+        await form.Validate();
+
+        if (form.IsValid)
+        {
+            OpenDialog();
+        }
+    }
+
+    /// <summary>
+    /// A standard AbstractValidator which contains multiple rules and can be shared with the back end API
+    /// </summary>
+    /// <typeparam name="OrderModel"></typeparam>
+    public class OrderModelFluentValidator : AbstractValidator<OrderModel>
+    {
+        public OrderModelFluentValidator()
+        {
+            RuleFor(x => x.FullName)
+                .NotEmpty()
+                .Length(1, 100);
+
+            RuleFor(x => x.EmailAddress)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .EmailAddress()
+                .MustAsync(async (value, cancellationToken) => await IsUniqueAsync(value));
+
+            RuleFor(x => x.PhoneNumber)
+                .NotEmpty()
+                .Length(10);
+
+            RuleFor(x => x.CreditCardNumber)
+                .NotEmpty()
+                .Length(1, 100)
+                .CreditCard();
+
+            RuleFor(x => x.ExpirationDate)
+                .NotEmpty()
+                .Length(5);
+
+            RuleFor(x => x.CVC)
+                .NotEmpty()
+                .Length(3);
+
+            RuleFor(x => x.Address.Address)
+                .NotEmpty()
+                .Length(1, 100);
+
+            RuleFor(x => x.Address.City)
+                .NotEmpty()
+                .Length(1, 100);
+
+            RuleFor(x => x.Address.Country)
+                .NotEmpty()
+                .Length(1, 100);
+        }
+
+        private async Task<bool> IsUniqueAsync(string email)
+        {
+            // Simulates a long running http call
+            await Task.Delay(2000);
+            return email.ToLower() != "test@test.com";
+        }
+
+        public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
+        {
+            var result = await ValidateAsync(ValidationContext<OrderModel>.CreateWithOptions((OrderModel)model, x => x.IncludeProperties(propertyName)));
+            if (result.IsValid)
+                return Array.Empty<string>();
+            return result.Errors.Select(e => e.ErrorMessage);
+        };
+    }
 }
+
+<style>
+    #farmer-nav-bar {
+        visibility: hidden;
+    }
+</style>

@@ -1,12 +1,21 @@
 ﻿@page "/map"
 
-<h1>Nearby Sellers</h1>
+<MudAppBar Color="Color.Secondary" Fixed="false">
+    <MudIconButton Icon="@Icons.Filled.ArrowBack" Color="Color.Primary" Edge="Edge.Start" />
+    <MudSpacer />
+    <MudText Color="Color.Dark" Typo="Typo.h6">Nearby Sellers</MudText>
+    <MudSpacer />
+</MudAppBar>
 
 <MudPaper Class="pa-4 d-flex" Outlined="true" Style="height:600px">
 <iframe src="map.html"
         style="border:0;width:fit-content; height:fit-content"
         loading="lazy">
 </iframe>
-
 </MudPaper>
 
+<style>
+    #farmer-nav-bar {
+        visibility: hidden;
+    }
+</style>

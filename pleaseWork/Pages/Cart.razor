@@ -1,16 +1,20 @@
 ﻿@page "/cart"
 
-    <div id="background">
-        <MudPaper Elevation="10" Height="47px" Width="100%">
-            <MudText Class="pt-2" Typo="Typo.h5">Cart</MudText>
-        </MudPaper>
-    </div>
+
+<MudAppBar Color="Color.Secondary" Fixed="false">
+    <MudIconButton Icon="@Icons.Filled.ArrowBack" Color="Color.Primary" Edge="Edge.Start" />
+    <MudSpacer />
+    <MudText Color="Color.Dark" Typo="Typo.h6">Your Order</MudText>
+    <MudSpacer />
+</MudAppBar>
+
+<MudStack>
 
 
 
     <MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
         <MudItem>
-            <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudCard Height="180px" FullWidth="true">
                 <MudPaper Height="110px" Width="172px" />
                 <MudCardContent>
                     <MudText>Bananas</MudText>
@@ -19,7 +23,7 @@
             </MudCard>
         </MudItem>
         <MudItem>
-            <MudCard Elevation="10" Height="180px" Width="172px">
+            <MudCard Height="180px" FullWidth="true">
                 <MudPaper Height="110px" Width="172px" />
                 <MudCardContent>
                     <MudText>Apples</MudText>
@@ -28,7 +32,35 @@
             </MudCard>
         </MudItem>
     </MudGrid>
+</MudStack>
 
-    @code {
-        public string TextValue { get; set; }
+<MudText Typo="Typo.h5" Class="d-inline align-start">Total</MudText>
+<MudText Typo="Typo.h5" Class="d-inline align-end">$23.56</MudText>
+      
+
+<MudButton Class="mt-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" Href="/billing">Checkout</MudButton>
+
+
+@code {
+    public string TextValue { get; set; }
+}
+<style>
+    #background {
+        align-content: center;
+        border-radius: 0px 0px 0px 0px;
+        text-align: center;
+        position: relative;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
     }
+
+    center {
+        text-align: center
+    }
+
+    #farmer-nav-bar {
+        visibility: hidden;
+    }
+</style>
