@@ -1,7 +1,8 @@
 @page "/Account"
 @inject NavigationManager NavManager
 @using Newtonsoft.Json;
-
+@using Controllers
+@using Data
 
 <MudAppBar Color="Color.Secondary" Fixed="false">
     <MudIconButton Icon="@Icons.Filled.ArrowBack" Color="Color.Primary" Edge="Edge.Start" />
@@ -11,8 +12,8 @@
 </MudAppBar>
 
 <MudImage Src="https://i.imgur.com/54e6tXY.png" Alt="Mony the dog" Elevation="25" Class="rounded-lg mx-auto pa-6" Width="200" Height="150" />
-<MudText Align="Align.Center" Typo="Typo.h5">Your Name</MudText>
-<MudText Align="Align.Center" Typo="Typo.h6">Your email</MudText>
+<MudText Align="Align.Center" Typo="Typo.h5">@x</MudText>
+<MudText Align="Align.Center" Typo="Typo.h6">@Prof.currentuser.EmailTextValue</MudText>
 
 
 <MudDivider DividerType="DividerType.Middle" Class="my-6" />
@@ -69,6 +70,7 @@
         return;
     }
     */
+    string x = Prof.currentuser.NameTextValue;
 }
 
 <style>

@@ -59,6 +59,7 @@
       <None Remove="BlazorGoogleMaps" />
       <None Remove="BlazorGoogleMapsV3" />
       <None Remove="Resources\Images\" />
+      <None Remove="Controllers\" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="FluentValidation" Version="11.4.0" />
@@ -73,5 +74,6 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Resources\Images\" />
+      <Folder Include="Controllers\" />
     </ItemGroup>
 </Project>

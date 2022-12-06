@@ -1,4 +1,6 @@
 ﻿@using Models
+@using pleaseWork.Data
+@using pleaseWork.Controllers
 
 @page "/sign-up"
 @inject IDialogService DialogService
@@ -49,6 +51,10 @@
             image = null,
             cart = null
         };
+
+        Prof.currentuser.EmailTextValue = acct.email;
+        Prof.currentuser.NameTextValue = acct.name;
+
 
         var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(acct), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
 
