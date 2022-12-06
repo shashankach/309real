@@ -30,8 +30,8 @@
         foreach (Models.Product product in Products)
         {
             <MudItem>
-                <MudCard Elevation="10" Height="180px" Width="172px">
-                    <MudPaper Height="110px" Width="172px" />
+                <MudCard>
+                    <MudImage Src=@product.image Alt="Product Image" Elevation="25" Class="rounded-lg mx-auto pa-6" Width="200" Height="150" />
                     <MudCardContent>
                         <MudText>@product.name</MudText>
                         <MudText Typo="Typo.body2">@product.price</MudText>
