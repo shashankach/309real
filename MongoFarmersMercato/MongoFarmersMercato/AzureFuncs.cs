@@ -40,6 +40,9 @@ namespace MongoFarmersMercato
 
         [BsonElement("image")]
         public string image { get; set; }
+
+        [BsonElement("loggedIn")]
+        public bool loggedIn { get; set; }
     }
 
     [BsonIgnoreExtraElements]
@@ -199,6 +202,63 @@ namespace MongoFarmersMercato
             }
 
             return (ActionResult)new OkObjectResult("Successfully removed product");
+        }
+
+        [FunctionName("add-to-cart")]
+        public static async Task<IActionResult> AddToCart(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "add-to-cart-{username}-{cart}")] HttpRequest req, string username, List<Product> cart)
+        {
+            try
+            {
+                string connectionString = "mongodb+srv://farmersmercatoadmin:3y1C4McLKhvGA3Ae@farmersmercato.fmitmu2.mongodb.net/test";
+                var client = new MongoClient(connectionString);
+                var database = client.GetDatabase("MongoFarmersMercato");
+                var collection = database.GetCollection<User>("users");
+
+                var userInput = await new StreamReader(req.Body).ReadToEndAsync();
+
+                Product product = JsonConvert.DeserializeObject<Product>(userInput);
+
+                cart.Add(product);
+
+                await collection.UpdateOneAsync(Builders<User>.Filter.Eq("username", username), Builders<User>.Update.Set("cart", cart));
+
+                var products = await collection.Find(_ => true).ToListAsync();
+
+                return (ActionResult)new OkObjectResult(products);
+
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult("Error adding to cart - " + e.Message);
+
+            }
+
+            return (ActionResult)new OkObjectResult("Successfully added to cart");
+        }
+
+        [FunctionName("update-loggedIn")]
+        public static async Task<IActionResult> UpdateLoggedIn(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "update-loggedIn-{username}")] HttpRequest req, string username)
+        {
+            try
+            {
+                string connectionString = "mongodb+srv://farmersmercatoadmin:3y1C4McLKhvGA3Ae@farmersmercato.fmitmu2.mongodb.net/test";
+                var client = new MongoClient(connectionString);
+                var database = client.GetDatabase("MongoFarmersMercato");
+                var collection = database.GetCollection<User>("users");
+
+                var userInput = await new StreamReader(req.Body).ReadToEndAsync();
+
+                await collection.UpdateOneAsync(Builders<User>.Filter.Eq("username", username), Builders<User>.Update.Set("loggedIn", userInput));
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult("Error updating loggedIn - " + e.Message);
+
+            }
+
+            return (ActionResult)new OkObjectResult("Successfully updated loggedIn");
         }
     }
 }

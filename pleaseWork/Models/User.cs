@@ -29,5 +29,8 @@ namespace pleaseWork.Models
 
         [JsonProperty(PropertyName = "cart")]
         public List<Product> cart { get; set; }
+
+        [JsonProperty(PropertyName = "loggedIn")]
+        public bool loggedIn { get; set; }
     }
 }

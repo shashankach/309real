@@ -47,7 +47,8 @@
             name = NameTextValue,
             email = EmailTextValue,
             image = null,
-            cart = null
+            cart = null,
+            loggedIn = false
         };
 
         var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(acct), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);

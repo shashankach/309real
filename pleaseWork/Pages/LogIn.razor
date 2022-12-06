@@ -47,10 +47,12 @@
             {
                 if (account.farmer == true)
                 {
+                    UpdateLoggedInVar(account.username, true);
                     MyNavigationManager.NavigateTo("/inventory");
                 }
                 else
                 {
+                    UpdateLoggedInVar(account.username, true);
                     MyNavigationManager.NavigateTo("/search");
                 }
                 return;
@@ -58,6 +60,19 @@
         }
 
         OpenDialog();
+    }
+
+    private async Task UpdateLoggedInVar(string username, bool isLoggedIn)
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/update-loggedIn-" + username) };
+
+        HttpResponseMessage response = null;
+
+        var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(isLoggedIn), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
+
+        response = await client.PutAsync(client.BaseAddress, payloadString);
+
+        return;
     }
 }
 
