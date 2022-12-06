@@ -76,7 +76,4 @@
       <Folder Include="Resources\Images\" />
       <Folder Include="Controllers\" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Pages\images\" />
-    </ItemGroup>
 </Project>
