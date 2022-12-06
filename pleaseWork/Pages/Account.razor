@@ -1,16 +1,9 @@
-﻿@page "/Account"
+@page "/Account"
+@inject NavigationManager NavManager
+@using Newtonsoft.Json;
 
-<<<<<<< HEAD
 
-
-<MudAppBar Color="Color.Secondary" Fixed="false">
-    <MudIconButton Icon="@Icons.Filled.ArrowBack" Color="Color.Primary" Edge="Edge.Start" />
-    <MudSpacer />
-    <MudText Color="Color.Dark" Typo="Typo.h6">Account</MudText>
-    <MudSpacer />
-</MudAppBar>
-
-<MudImage Src="https://i.imgur.com/54e6tXY.png" Alt="Mony the dog" Elevation="25" Class="rounded-lg mx-auto pa-6" Width="200" Height="150"/>
+<MudImage Src="https://i.imgur.com/54e6tXY.png" Alt="Mony the dog" Elevation="25" Class="rounded-lg" Width="200" Height="150"/>
 <MudText Align="Align.Center" Typo="Typo.h4">Your Name</MudText>
 <MudText Align="Align.Center" Typo="Typo.h4">Your email</MudText>
 <MudText Align="Align.Center" Typo="Typo.h4">Your number</MudText>
@@ -21,23 +14,48 @@
 <MudText Typo="Typo.h5">Delivery Address</MudText>
 
 
-=======
-<center>
-    <MudPaper Elevation="10" Height="47px" Width="100%">
-        <MudText Class="pt-2" Typo="Typo.h5">Account</MudText>
-    </MudPaper>
-</center>
-
-<MudButton Variant="Variant.Text" Href="/orders">Profile</MudButton>
-<MudButton Variant="Variant.Text" Href="/orders">Orders</MudButton>
-<MudButton Variant="Variant.Text" Href="/orders">Address</MudButton>
-<MudButton Variant="Variant.Text" Href="/orders">Payment</MudButton>
->>>>>>> 1c29b0b9176619865ac2417c5cadeb62ecd8b7ec
 
 
-<MudButton Class="mt-2" Variant="Variant.Filled" Color="Color.Inherit" Href="/orders">Logout</MudButton>
+<MudButton Class="mt-2" Variant="Variant.Filled" Color="Color.Inherit" Href="/">Logout</MudButton>
+
 @code {
+    /*
+    private async Task LogOutUser()
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/log-in") };
 
+        HttpResponseMessage response = null;
+        response = await client.GetAsync(client.BaseAddress);
+
+        var data = await response.Content.ReadAsStringAsync();
+        dynamic accounts = JsonConvert.DeserializeObject(data);
+
+        foreach (var account in accounts)
+        {
+            if (account.loggedIn == true)
+            {
+                UpdateLoggedInVar(account.username, false);
+            }
+        }
+
+        NavManager.NavigateTo("/");
+
+        return;
+    }
+    
+    private async Task UpdateLoggedInVar(string username, bool isLoggedIn)
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/update-loggedIn-" + username) };
+
+        HttpResponseMessage response = null;
+
+        var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(isLoggedIn), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
+
+        response = await client.PutAsync(client.BaseAddress, payloadString);
+
+        return;
+    }
+    */
 }
 
 <style>

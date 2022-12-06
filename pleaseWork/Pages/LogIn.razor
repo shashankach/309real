@@ -11,14 +11,14 @@
         <MudText Typo="Typo.h2">Farmer's Mercato</MudText>
         <MudTextField @bind-Value="UsernameTextValue" Label="Username" FullWidth="true" Variant="Variant.Filled"></MudTextField>
         <MudTextField @bind-Value="PasswordTextValue" Label="Password" FullWidth="true" Variant="Variant.Filled" InputType=InputType.Password></MudTextField>
-        <MudButton Class="mt-2 ma-10" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" FullWidth="true" Href="/search">LOG IN</MudButton>
+        <MudButton Class="mt-2 ma-10" @onclick="SignIn" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" FullWidth="true">LOG IN</MudButton>
     </MudStack>
-        <MudText Typo="Typo.subtitle1" Class="d-inline ">Don't have an account?</MudText>
-        <MudText Typo="Typo.subtitle1" Class="d-inline"><a Href="/sign-up"> Sign Up</a></MudText>
-        @*<MudButton Variant="Variant.Outlined" Size="Size.Large" Color="Color.Primary" Href="/sign-up">Sign Up</MudButton>*@
+    <MudText Typo="Typo.subtitle1" Class="d-inline ">Don't have an account?</MudText>
+    <MudText Typo="Typo.subtitle1" Class="d-inline"><a Href="/sign-up"> Sign Up</a></MudText>
+    @*<MudButton Variant="Variant.Outlined" Size="Size.Large" Color="Color.Primary" Href="/sign-up">Sign Up</MudButton>*@
 
 </div>
-    
+
 
 
 @code {
@@ -33,7 +33,7 @@
 
     private async Task SignIn()
     {
-        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/log-in") };
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/log-in?") };
 
         HttpResponseMessage response = null;
         response = await client.GetAsync(client.BaseAddress);
@@ -65,9 +65,11 @@
     #user-nav-bar {
         visibility: hidden;
     }
+
     #farmer-nav-bar {
         visibility: hidden;
     }
+
     #body {
         text-align: center;
     }

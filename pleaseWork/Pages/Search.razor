@@ -4,6 +4,7 @@
 @using pleaseWork.Data
 @using Models
 @using Newtonsoft.Json;
+@inject IDialogService DialogService
 
 <MudTextField @bind-Value="@search_text" @onkeydown="@Enter" Label="Search" Variant="Variant.Filled"></MudTextField>
 
@@ -26,6 +27,7 @@
                                 <MudText Typo="Typo.body2">@product.price</MudText>
                                 <MudText Typo="Typo.body2" id="seller">@product.seller</MudText>
                             </MudCardContent>
+                            <MudButton @onclick="@(()=>AddtoCart(product))" Variant="Variant.Outlined" Size="Size.Small" Color="Color.Primary" FullWidth="true">Add to Cart</MudButton>
                         </MudCard>
                     </MudItem>
                 }
@@ -136,6 +138,52 @@
         }
 
         return farmers;
+    }
+
+    private void OpenDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<AddtoCartDialog>("Product added to cart", options);
+    }
+
+    private async Task<List<dynamic>> GetUserInfo()
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/log-in") };
+
+        HttpResponseMessage response = null;
+        response = await client.GetAsync(client.BaseAddress);
+
+        var data = await response.Content.ReadAsStringAsync();
+        dynamic accounts = JsonConvert.DeserializeObject(data);
+
+        List<dynamic> result = new List<dynamic>();
+
+        foreach (var account in accounts)
+        {
+            if (account.loggedIn == true)
+            {
+                result.Add(account.username);
+                result.Add(account.cart);
+                return result;
+            }
+        }
+
+        return result;
+    }
+
+    private async Task AddtoCart(Models.Product inProduct)
+    {
+        dynamic result = GetUserInfo().Result;
+
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/add-to-cart-" + result[0] + "-" + result[1]) };
+
+        HttpResponseMessage response = null;
+
+        var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(inProduct), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
+
+        response = await client.PutAsync(client.BaseAddress, payloadString);
+
+        OpenDialog();
     }
 
     protected override async Task OnInitializedAsync()
