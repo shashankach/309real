@@ -20,14 +20,16 @@
                 foreach (Models.Product product in Products)
                 {
                     <MudItem>
-                        <MudCard Elevation="10" Height="180px" Width="172px">
-                            <MudPaper Height="110px" Width="172px" />
+                        <MudCard>
+                            <MudCardMedia Image="images/carrots.jpg" Height="200" />
                             <MudCardContent>
-                                <MudText>@product.name</MudText>
+                                <MudText Typo="Typo.h5">@product.name</MudText>
                                 <MudText Typo="Typo.body2">@product.price</MudText>
-                                <MudText Typo="Typo.body2" id="seller">@product.seller</MudText>
+                                <MudText Typo="Typo.body2">@product.seller</MudText>
                             </MudCardContent>
-                            <MudButton @onclick="@(()=>AddtoCart(product))" Variant="Variant.Outlined" Size="Size.Small" Color="Color.Primary" FullWidth="true">Add to Cart</MudButton>
+                            <MudCardActions>
+                                <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="@(()=>AddtoCart(product))">Add to Cart</MudButton>
+                            </MudCardActions>
                         </MudCard>
                     </MudItem>
                 }
@@ -45,10 +47,10 @@
                 foreach (var farmer in Farmers)
                 {
                     <MudItem>
-                        <MudCard Elevation="10" Height="180px" Width="172px">
-                            <MudPaper Height="110px" Width="172px" />
+                        <MudCard>
+                            <MudCardMedia Image="images/carrots.jpg" Height="200" />
                             <MudCardContent>
-                                <MudText>@farmer</MudText>
+                                <MudText Typo="Typo.h5" @bind-Value="NameTextValue">@farmer</MudText>
                             </MudCardContent>
                         </MudCard>
                     </MudItem>
@@ -59,7 +61,8 @@
 </MudTabs>
 
 @code {
-    public string TextValue { get; set; }
+    public string NameTextValue { get; set; }
+
     public List<Models.Product> Products = new List<Models.Product>();
     public List<string> Farmers = new List<string>();
     private MudTheme Theme = new MudTheme();
@@ -72,12 +75,6 @@
         {
             await OnInitializedAsync();
         }
-    }
-
-    private void toProduct()
-    {
-        //Console.WriteLine(s);
-        NavManager.NavigateTo("/product");
     }
 
     private async Task<List<Models.Product>> SearchProducts(string search_text)
@@ -146,42 +143,23 @@
         DialogService.Show<AddtoCartDialog>("Product added to cart", options);
     }
 
-    private async Task<List<dynamic>> GetUserInfo()
-    {
-        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/log-in") };
-
-        HttpResponseMessage response = null;
-        response = await client.GetAsync(client.BaseAddress);
-
-        var data = await response.Content.ReadAsStringAsync();
-        dynamic accounts = JsonConvert.DeserializeObject(data);
-
-        List<dynamic> result = new List<dynamic>();
-
-        foreach (var account in accounts)
-        {
-            if (account.loggedIn == true)
-            {
-                result.Add(account.username);
-                result.Add(account.cart);
-                return result;
-            }
-        }
-
-        return result;
-    }
-
     private async Task AddtoCart(Models.Product inProduct)
     {
-        dynamic result = GetUserInfo().Result;
-
-        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/add-to-cart-" + result[0] + "-" + result[1]) };
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/add-to-cart") };
 
         HttpResponseMessage response = null;
 
-        var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(inProduct), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
+        var product = new Models.Product()
+        {
+            name = inProduct.name,
+            price = inProduct.price,
+            seller = inProduct.seller,
+            image = inProduct.image,
+        };
 
-        response = await client.PutAsync(client.BaseAddress, payloadString);
+        var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(product), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
+
+        response = await client.PostAsync(client.BaseAddress, payloadString);
 
         OpenDialog();
     }

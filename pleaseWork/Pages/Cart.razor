@@ -1,49 +1,153 @@
-﻿@page "/cart"
+@page "/cart"
+
+@using Newtonsoft.Json;
+@inject NavigationManager NavManager
+@inject IDialogService DialogService
 
 
 <MudAppBar Color="Color.Secondary" Fixed="false">
-    <MudIconButton Icon="@Icons.Filled.ArrowBack" Color="Color.Primary" Edge="Edge.Start" />
     <MudSpacer />
     <MudText Color="Color.Dark" Typo="Typo.h6">Your Order</MudText>
     <MudSpacer />
 </MudAppBar>
 
-<MudStack>
-
-
-
-    <MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
-        <MudItem>
-            <MudCard Height="180px" FullWidth="true">
-                <MudPaper Height="110px" Width="172px" />
-                <MudCardContent>
-                    <MudText>Bananas</MudText>
-                    <MudText Typo="Typo.body2">$3.99</MudText>
-                </MudCardContent>
-            </MudCard>
-        </MudItem>
-        <MudItem>
-            <MudCard Height="180px" FullWidth="true">
-                <MudPaper Height="110px" Width="172px" />
-                <MudCardContent>
-                    <MudText>Apples</MudText>
-                    <MudText Typo="Typo.body2">$3.99</MudText>
-                </MudCardContent>
-            </MudCard>
-        </MudItem>
-    </MudGrid>
-</MudStack>
+<MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
+    @if (InCart == null || InCart.Count == 0)
+    {
+        <MudText Typo="Typo.body2">Cart is empty.</MudText>
+    }
+    else
+    {
+        foreach (Models.Product item in InCart)
+        {
+            <MudItem>
+                <MudCard>
+                    <MudCardMedia Image="images/carrots.jpg" Height="200" />
+                    <MudCardContent>
+                        <MudText Typo="Typo.h5">@item.name</MudText>
+                        <MudText Typo="Typo.body2">@item.price</MudText>
+                        <MudText Typo="Typo.body2">@item.seller</MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="@(()=>RemoveFromCart(item))">Remove</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+    }
+</MudGrid>
 
 <MudText Typo="Typo.h5" Class="d-inline align-start">Total</MudText>
-<MudText Typo="Typo.h5" Class="d-inline align-end">$23.56</MudText>
+<MudText Typo="Typo.h5" Class="d-inline align-end">@totalText</MudText>
       
 
-<MudButton Class="mt-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" Href="/billing">Checkout</MudButton>
+<MudButton Class="mt-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" @onclick="SendOrder">Checkout</MudButton>
 
 
 @code {
-    public string TextValue { get; set; }
+    public List<Models.Product> InCart = new List<Models.Product>();
+    public string totalText { get; set; }
+
+    private async Task GetCart()
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/get-cart") };
+
+        HttpResponseMessage response = null;
+        response = await client.GetAsync(client.BaseAddress);
+
+        var data = await response.Content.ReadAsStringAsync();
+        InCart = JsonConvert.DeserializeObject<List<Models.Product>>(data);
+
+        return;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetCart();
+        await GetTotal();
+    }
+
+    private void OpenDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<RemoveFromCartDialog>("Product removed from cart", options);
+    }
+
+    private async Task RemoveFromCart(Models.Product inProduct)
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/remove-item-" + inProduct.name + "-" + inProduct.seller) };
+
+        HttpResponseMessage response = null;
+
+        response = await client.DeleteAsync(client.BaseAddress);
+
+        await OnInitializedAsync();
+
+        OpenDialog();
+    }
+
+    private async Task GetTotal()
+    {
+        Double total = 0;
+
+        foreach (Models.Product product in InCart)
+        {
+            total += product.price;
+        }
+
+        totalText = "$" + Math.Round(total, 2);
+
+        return;
+    }
+
+    private async Task SendOrder()
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/add-order") };
+
+        HttpResponseMessage response = null;
+
+        var order = new Models.Order()
+            {
+                id = GenerateId(),
+                items = InCart
+            };
+
+        var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(order), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
+
+        response = await client.PostAsync(client.BaseAddress, payloadString);
+
+        await EmptyCart();
+    }
+
+    public static string GenerateId()
+    {
+        string[] ingredients = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,1,2,3,4,5,6,7,8,9,0".Split(',');
+        string result = "";
+
+        Random rnd = new Random();
+        for (int i = 0; i < 8; i++)
+        {
+            string rndIngr = ingredients[rnd.Next(ingredients.Length)];
+            result += rndIngr;
+        }
+
+        return result;
+    }
+
+    private async Task EmptyCart()
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/empty-cart") };
+
+        HttpResponseMessage response = null;
+
+        response = await client.DeleteAsync(client.BaseAddress);
+
+        NavManager.NavigateTo("/billing");
+
+        return;
+    }
 }
+
 <style>
     #background {
         align-content: center;

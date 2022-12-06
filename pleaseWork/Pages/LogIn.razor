@@ -36,34 +36,41 @@
 
     private async Task SignIn()
     {
-        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/log-in?") };
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/log-in") };
 
         HttpResponseMessage response = null;
         response = await client.GetAsync(client.BaseAddress);
 
         var data = await response.Content.ReadAsStringAsync();
+
         dynamic accounts = JsonConvert.DeserializeObject(data);
         Prof.currentuser = new Userd();
 
-        foreach (var account in accounts)
+
+
+        if (accounts != null)
+
         {
-            if (account.username == UsernameTextValue && account.password == PasswordTextValue)
+            foreach (var account in accounts)
             {
-                if (account.farmer == true)
+                if (account.username == UsernameTextValue && account.password == PasswordTextValue)
                 {
-                    MyNavigationManager.NavigateTo("/inventory");
-                    Prof.currentuser.EmailTextValue = account.email;
-                    Prof.currentuser.NameTextValue = account.name;
-                }
-                else
-                {
-                    MyNavigationManager.NavigateTo("/search");
 
-                    Prof.currentuser.EmailTextValue = account.email;
-
-                    Prof.currentuser.NameTextValue = account.name;
+                    if (account.farmer == true)
+                    {
+                        MyNavigationManager.NavigateTo("/inventory");
+                        Prof.currentuser.EmailTextValue = account.email;
+                        Prof.currentuser.NameTextValue = account.name;
+                    }
+                    else
+                    {
+                        MyNavigationManager.NavigateTo("/search");
+                        Prof.currentuser.EmailTextValue = account.email;
+                        Prof.currentuser.NameTextValue = account.name;
+                    }
+                    return;
                 }
-                return;
+
             }
         }
 
