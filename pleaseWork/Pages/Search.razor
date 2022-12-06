@@ -21,7 +21,8 @@
                 {
                     <MudItem>
                         <MudCard>
-                            <MudCardMedia Image="images/carrots.jpg" Height="200" />
+                            <MudImage Src=@product.image Alt="Product Image" Elevation="25" Class="rounded-lg mx-auto pa-6" Width="200" Height="150" />
+                            @*<MudCardMedia Image="images/carrots.jpg" Height="200" />*@
                             <MudCardContent>
                                 <MudText Typo="Typo.h5">@product.name</MudText>
                                 <MudText Typo="Typo.body2">@product.price</MudText>
@@ -48,7 +49,6 @@
                 {
                     <MudItem>
                         <MudCard>
-                            <MudCardMedia Image="images/carrots.jpg" Height="200" />
                             <MudCardContent>
                                 <MudText Typo="Typo.h5" @bind-Value="NameTextValue">@farmer</MudText>
                             </MudCardContent>
@@ -140,7 +140,7 @@
     private void OpenDialog()
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
-        DialogService.Show<AddtoCartDialog>("Product added to cart", options);
+        DialogService.Show<AddtoCartDialog>("Added to cart!", options);
     }
 
     private async Task AddtoCart(Models.Product inProduct)

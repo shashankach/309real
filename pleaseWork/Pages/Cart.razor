@@ -14,7 +14,7 @@
 <MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
     @if (InCart == null || InCart.Count == 0)
     {
-        <MudText Typo="Typo.body2">Cart is empty.</MudText>
+        <MudText Typo="Typo.subtitle2">Cart is empty.</MudText>
     }
     else
     {
@@ -22,7 +22,7 @@
         {
             <MudItem>
                 <MudCard>
-                    <MudCardMedia Image="images/carrots.jpg" Height="200" />
+                    <MudCardMedia Image=@item.image Height="200" />
                     <MudCardContent>
                         <MudText Typo="Typo.h5">@item.name</MudText>
                         <MudText Typo="Typo.body2">@item.price</MudText>
@@ -37,9 +37,10 @@
     }
 </MudGrid>
 
-<MudText Typo="Typo.h5" Class="d-inline align-start">Total</MudText>
+<MudText Typo="Typo.h5" Class="d-inline align-start">Total:</MudText>
+<MudSpacer />
 <MudText Typo="Typo.h5" Class="d-inline align-end">@totalText</MudText>
-      
+
 
 <MudButton Class="mt-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" @onclick="SendOrder">Checkout</MudButton>
 
@@ -98,6 +99,7 @@
         totalText = "$" + Math.Round(total, 2);
 
         return;
+
     }
 
     private async Task SendOrder()
@@ -107,10 +109,10 @@
         HttpResponseMessage response = null;
 
         var order = new Models.Order()
-            {
-                id = GenerateId(),
-                items = InCart
-            };
+        {
+            id = GenerateId(),
+            items = InCart
+        };
 
         var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(order), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
 

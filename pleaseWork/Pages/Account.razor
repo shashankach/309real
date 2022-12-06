@@ -5,32 +5,48 @@
 @using Data
 
 <MudAppBar Color="Color.Secondary" Fixed="false">
-    <MudIconButton Icon="@Icons.Filled.ArrowBack" Color="Color.Primary" Edge="Edge.Start" />
     <MudSpacer />
     <MudText Color="Color.Dark" Typo="Typo.h6">Account</MudText>
     <MudSpacer />
 </MudAppBar>
 
-<MudImage Src="https://i.imgur.com/54e6tXY.png" Alt="Mony the dog" Elevation="25" Class="rounded-lg mx-auto pa-6" Width="200" Height="150" />
-<MudText Align="Align.Center" Typo="Typo.h5">@x</MudText>
-<MudText Align="Align.Center" Typo="Typo.h6">@Prof.currentuser.EmailTextValue</MudText>
+
+<MudImage Src="https://i.imgur.com/jZqwVgg.jpg" Alt="Davide" Elevation="25" Class="rounded-lg mx-auto pa-6 d-flex justify-center" Width="150" Height="150" />
+<MudText Align="Align.Center" Typo="Typo.h5">Davide Falessi</MudText>
+<MudText Align="Align.Center" Typo="Typo.h6">dfalessi@calpoly.edu</MudText>
 
 
 <MudDivider DividerType="DividerType.Middle" Class="my-6" />
 
 <MudStack>
-    <MudButton Variant="Variant.Text" Href="/orders">Profile</MudButton>
+    <MudButton Variant="Variant.Text" Href="/Account">Profile</MudButton>
     <MudDivider />
-    <MudButton Variant="Variant.Text" Href="/orders">Orders</MudButton>
+    <MudButton Variant="Variant.Text" OnClick="Addresses">Address</MudButton>
     <MudDivider />
-    <MudButton Variant="Variant.Text" Href="/orders">Address</MudButton>
-    <MudDivider />
-    <MudButton Variant="Variant.Text" Href="/orders">Payment</MudButton>
+    <MudButton Variant="Variant.Text" Href="/payment">Payment</MudButton>
     <MudDivider />
 </MudStack>
 
 
-<MudButton Class="mt-2" Variant="Variant.Filled" Color="Color.Inherit" @onclick="EmptyCart">LOG OUT</MudButton>
+
+<MudButton Class="mt-2 d-flex align-content-center" Variant="Variant.Filled" Color="Color.Inherit" @onclick="EmptyCart">LOG OUT</MudButton>
+
+
+
+<MudMessageBox @ref="mbox" Title="Your Address" CancelText="Cancel">
+    <MessageContent>
+        Vicolo Della Cancelleria 15
+        <br />
+        Rome Lazio
+        <br />
+        Italy
+    </MessageContent>
+    <YesButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary">Update</MudButton>
+    </YesButton>
+</MudMessageBox>
+
+
 
 @code {
     private async Task EmptyCart()
@@ -46,22 +62,16 @@
         return;
     }
 
-    
-    private async Task UpdateLoggedInVar(string username, bool isLoggedIn)
+
+    MudMessageBox mbox { get; set; }
+    string state = "Message box hasn't been opened yet";
+
+    private async void Addresses()
     {
-        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/update-loggedIn-" + username) };
-
-        HttpResponseMessage response = null;
-
-        var payloadString = new StringContent(System.Text.Json.JsonSerializer.Serialize(isLoggedIn), System.Text.Encoding.UTF8, System.Net.Mime.MediaTypeNames.Application.Json);
-
-        response = await client.PutAsync(client.BaseAddress, payloadString);
-
-        return;
+        bool? result = await mbox.Show();
+        state = result == null ? "Cancelled" : "Deleted!";
+        StateHasChanged();
     }
-    */
-    string x = Prof.currentuser.NameTextValue;
-
 }
 
 <style>

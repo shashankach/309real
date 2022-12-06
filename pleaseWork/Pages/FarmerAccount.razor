@@ -9,27 +9,39 @@
     <MudSpacer />
 </MudAppBar>
 
-<MudImage Src="https://i.imgur.com/54e6tXY.png" Alt="Mony the dog" Elevation="25" Class="rounded-lg mx-auto pa-6" Width="200" Height="150" />
-<MudText Align="Align.Center" Typo="Typo.h5">Your Name</MudText>
-<MudText Align="Align.Center" Typo="Typo.h6">Your email</MudText>
+<MudImage Src="https://i.imgur.com/FF5lwCi.jpg" Alt="Farm" Elevation="25" Class="rounded-lg mx-auto pa-6 d-flex justify-center" Width="150" Height="150" />
+<MudText Align="Align.Center" Typo="Typo.h5">Aspen Way</MudText>
+<MudText Align="Align.Center" Typo="Typo.h6">Vicolo del Gelsomino 68, 00165 Rome Italy</MudText>
 
 <MudDivider DividerType="DividerType.Middle" Class="my-6" />
 
 
 <MudStack>
-    <MudButton Variant="Variant.Text" Href="/orders">Profile</MudButton>
+    <MudButton Variant="Variant.Text" Href="/FarmerAccount">Profile</MudButton>
     <MudDivider />
     <MudButton Variant="Variant.Text" Href="/orders">Orders</MudButton>
     <MudDivider />
-    <MudButton Variant="Variant.Text" Href="/orders">Address</MudButton>
-    <MudDivider />
-    <MudButton Variant="Variant.Text" Href="/orders">Payment</MudButton>
+    <MudButton Variant="Variant.Text" OnClick="Addresses">Address</MudButton>
     <MudDivider />
 </MudStack>
 
 
 
 <MudButton Class="mt-2" Variant="Variant.Filled" Color="Color.Inherit" Href="/">Logout</MudButton>
+
+
+<MudMessageBox @ref="mbox" Title="Your Address" CancelText="Cancel">
+    <MessageContent>
+        Vicolo del Gelsomino 68, 00165
+        <br />
+        Rome Lazio
+        <br />
+        Italy
+    </MessageContent>
+    <YesButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary">Update</MudButton>
+    </YesButton>
+</MudMessageBox>
 
 @code {
     /*
@@ -55,7 +67,7 @@
 
         return;
     }
-    
+
     private async Task UpdateLoggedInVar(string username, bool isLoggedIn)
         {
         HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/update-loggedIn-" + username) };
@@ -69,6 +81,16 @@
     return;
     }
     */
+
+    MudMessageBox mbox { get; set; }
+    string state = "Message box hasn't been opened yet";
+
+    private async void Addresses()
+    {
+        bool? result = await mbox.Show();
+        state = result == null ? "Cancelled" : "Deleted!";
+        StateHasChanged();
+    }
 }
 
 <style>
