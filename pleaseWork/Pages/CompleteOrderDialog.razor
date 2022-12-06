@@ -1,11 +1,11 @@
-﻿@page "/add-to-cart-dialog"
+﻿@page "/complete-order-dialog"
 
 <MudDialog>
     <DialogContent>
-        Head over to your cart when you are ready to place an order.
+        The customer will now receive a notification letting them know to pick up their order.
     </DialogContent>
     <DialogActions>
-        <MudButton Color="Color.Primary" OnClick="Submit" Href="/search">Ok</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit" Href="/orders">Ok</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -14,5 +14,4 @@
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
-
 }

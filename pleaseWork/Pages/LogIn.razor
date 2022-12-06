@@ -33,7 +33,7 @@
 
     private async Task SignIn()
     {
-        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/log-in?") };
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/log-in") };
 
         HttpResponseMessage response = null;
         response = await client.GetAsync(client.BaseAddress);
@@ -41,19 +41,22 @@
         var data = await response.Content.ReadAsStringAsync();
         dynamic accounts = JsonConvert.DeserializeObject(data);
 
-        foreach (var account in accounts)
+        if (accounts != null)
         {
-            if (account.username == UsernameTextValue && account.password == PasswordTextValue)
+            foreach (var account in accounts)
             {
-                if (account.farmer == true)
+                if (account.username == UsernameTextValue && account.password == PasswordTextValue)
                 {
-                    MyNavigationManager.NavigateTo("/inventory");
+                    if (account.farmer == true)
+                    {
+                        MyNavigationManager.NavigateTo("/inventory");
+                    }
+                    else
+                    {
+                        MyNavigationManager.NavigateTo("/search");
+                    }
+                    return;
                 }
-                else
-                {
-                    MyNavigationManager.NavigateTo("/search");
-                }
-                return;
             }
         }
 

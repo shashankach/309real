@@ -26,11 +26,5 @@ namespace pleaseWork.Models
 
         [JsonProperty(PropertyName = "image")]
         public string image { get; set; }
-
-        [JsonProperty(PropertyName = "cart")]
-        public List<Product> cart { get; set; }
-
-       /* [JsonProperty(PropertyName = "loggedIn")]
-        public bool loggedIn { get; set; }*/
     }
 }

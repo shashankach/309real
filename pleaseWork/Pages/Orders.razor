@@ -1,35 +1,66 @@
-﻿@page "/orders"
+@page "/orders"
 
-
-<MudAppBar Color="Color.Secondary" Fixed="false">
-    <MudIconButton Icon="@Icons.Filled.ArrowBack" Color="Color.Primary" Edge="Edge.Start" />
-    <MudSpacer />
-    <MudText Color="Color.Dark" Typo="Typo.h6">Orders</MudText>
-    <MudSpacer />
-</MudAppBar>
-
+@inject IDialogService DialogService
+@using Newtonsoft.Json;
 
 <MudExpansionPanels>
-    <MudExpansionPanel Text="Harrison" MaxHeight="150">
-        <MudCard Elevation="10" Height="180px" Width="172px">
-            <MudPaper Height="110px" Width="172px" />
-            <MudCardContent>
-                <MudText>Bananas</MudText>
-                <MudText Typo="Typo.body2">$3.99</MudText>
-            </MudCardContent>
-        </MudCard>
-    </MudExpansionPanel>
-    <MudExpansionPanel Text="Joe" MaxHeight="500">
-        Grapes
-        Blueberries
-    </MudExpansionPanel>
-    <MudExpansionPanel Text="Davide" MaxHeight="1000">
-        Fuck
-        This Shit
-    </MudExpansionPanel>
-    <MudExpansionPanel Text="DaShank">
-        Oranges
-        Peaches
-    </MudExpansionPanel>
+    @if (AllOrders == null || AllOrders.Count == 0)
+    {
+        <MudText Typo="Typo.body2">No orders.</MudText>
+    }
+    else
+    {
+        foreach (Models.Order order in AllOrders)
+        {                
+            <MudExpansionPanel Text=@AllOrders.FindIndex(o => o.items == order.items).ToString() MaxHeight="150">
+                @foreach (Models.Product product in order.items)
+                {
+                    <text>@product.name</text>
+                    <br />
+                }
+                <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="@(()=>CompleteOrder(order.id))">Complete Order</MudButton>
+            </MudExpansionPanel>
+        }
+    }
 </MudExpansionPanels>
 
+@code {
+    public List<Models.Order> AllOrders = new List<Models.Order>();
+
+    private async Task GetOrders()
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/get-orders") };
+
+        HttpResponseMessage response = null;
+        response = await client.GetAsync(client.BaseAddress);
+
+        var data = await response.Content.ReadAsStringAsync();
+        AllOrders = JsonConvert.DeserializeObject<List<Models.Order>>(data);
+
+        return;
+    }
+
+    private void OpenDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<CompleteOrderDialog>("Order is completed", options);
+    }
+
+    private async Task CompleteOrder(string id)
+    {
+        HttpClient client = new HttpClient { BaseAddress = new Uri("https://farmersmercato.azurewebsites.net/api/complete-order-" + id) };
+
+        HttpResponseMessage response = null;
+
+        response = await client.DeleteAsync(client.BaseAddress);
+
+        await OnInitializedAsync();
+
+        OpenDialog();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetOrders();
+    }
+}
