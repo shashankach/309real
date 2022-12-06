@@ -1,0 +1,37 @@
+﻿@using Models
+
+@page "/payment"
+@inject IDialogService DialogService
+
+
+<MudAppBar Color="Color.Secondary" Fixed="false">
+    <MudSpacer />
+    <MudText Color="Color.Dark" Typo="Typo.h6">Payment Method</MudText>
+    <MudSpacer />
+</MudAppBar>
+
+<MudImage Src="https://i.imgur.com/czPcahP.jpg" Alt="Davide" Elevation="25" Class="rounded-lg mx-auto pa-6 d-flex justify-center" Width="300" Height="300" />
+
+<MudText>Add New Card</MudText>
+<MudTextField @bind-Value="CardName" Label="Cardholder Name" Variant="Variant.Text"></MudTextField>
+<MudTextField @bind-Value="CardNumber" Label="Card Number" Variant="Variant.Text"></MudTextField>
+<MudTextField @bind-Value="Expire" Label="Expiration Date" Variant="Variant.Text"></MudTextField>
+<MudTextField @bind-Value="CVC" Label="CVV" Variant="Variant.Text"></MudTextField>
+<MudButton Variant="Variant.Outlined" Color="Color.Primary">Add Now</MudButton>
+
+@code {
+    public string CardName { get; set; }
+    public string CardNumber { get; set; }
+    public string Expire { get; set; }
+    public string CVC { get; set; }
+}
+
+<style>
+    center {
+        text-align: center
+    }
+
+    #farmer-nav-bar {
+        visibility: hidden;
+    }
+</style>

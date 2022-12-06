@@ -4,13 +4,14 @@
 @page "/inventory"
 @inject IDialogService DialogService
 
-<div id="body">
-    <center>
-        <MudPaper Elevation="10" Height="47px" Width="100%">
-            <MudText Class="pt-2" Typo="Typo.h5">Your Products</MudText>
-        </MudPaper>
-    </center>
-</div>
+
+
+<MudAppBar Color="Color.Secondary" Fixed="false">
+    <MudSpacer />
+    <MudText Color="Color.Dark" Typo="Typo.h6">Farm Inventory</MudText>
+    <MudSpacer />
+</MudAppBar>
+
 <MudGrid Spacing="2" Class="mt-2" Justify="Justify.Center">
     <MudItem>
         <MudButton Variant="Variant.Outlined" Size="Size.Large" Color="Color.Primary" FullWidth="true" Href="/add-product">Add Product</MudButton>
@@ -30,8 +31,8 @@
         foreach (Models.Product product in Products)
         {
             <MudItem>
-                <MudCard Elevation="10" Height="180px" Width="172px">
-                    <MudPaper Height="110px" Width="172px" />
+                <MudCard>
+                    <MudImage Src=@product.image Alt="Product Image" Elevation="25" Class="rounded-lg mx-auto pa-6" Width="200" Height="150" />
                     <MudCardContent>
                         <MudText>@product.name</MudText>
                         <MudText Typo="Typo.body2">@product.price</MudText>
