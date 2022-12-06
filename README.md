@@ -6,7 +6,7 @@ APP OVERVIEW:
 The system aims to give local farmers a platform to promote and sell their products. This application provides farmers with the ability to showcase their current
 inventory and place/dispatch orders. Users will be able to view this information and find markets/farms based on their current location.
 
-OBJECTS & DATABASES:
+OBJECTS & DATABASES (MongoDB):
 - User: {“username”: string,
     “password”: string,
     “farmer”: boolean
