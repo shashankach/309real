@@ -1,6 +1,6 @@
-# 309real
+# Farmer's Mercato App
 
 README
 
-309 Project #1
-Anushree, Annie, Joe, Shashank
+CSC 309 Project #1
+Shashank Acharya, Annie Le Piere, Joseph Macfarlane, and Anushree Parmar
