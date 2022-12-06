@@ -1,5 +1,8 @@
 @using Models
 @using Newtonsoft.Json;
+@using Data
+@using Controllers
+
 @inject NavigationManager MyNavigationManager
 @inject IDialogService DialogService
 
@@ -41,24 +44,35 @@
         response = await client.GetAsync(client.BaseAddress);
 
         var data = await response.Content.ReadAsStringAsync();
+
         dynamic accounts = JsonConvert.DeserializeObject(data);
+        Prof.currentuser = new Userd();
+
+
 
         if (accounts != null)
+
         {
             foreach (var account in accounts)
             {
                 if (account.username == UsernameTextValue && account.password == PasswordTextValue)
                 {
+
                     if (account.farmer == true)
                     {
                         MyNavigationManager.NavigateTo("/inventory");
+                        Prof.currentuser.EmailTextValue = account.email;
+                        Prof.currentuser.NameTextValue = account.name;
                     }
                     else
                     {
                         MyNavigationManager.NavigateTo("/search");
+                        Prof.currentuser.EmailTextValue = account.email;
+                        Prof.currentuser.NameTextValue = account.name;
                     }
                     return;
                 }
+
             }
         }
 
