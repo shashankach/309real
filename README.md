@@ -9,7 +9,7 @@ inventory and place/dispatch orders. Users will be able to view this information
 OBJECTS & DATABASES (MongoDB):
 - User: {“username”: string,
     “password”: string,
-    “farmer”: boolean
+    “farmer”: boolean,
     “name”: string,
     “email”: string,
     “image”: string}
